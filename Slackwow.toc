@@ -1,0 +1,8 @@
+## Interface: 30300
+## Title: Slackwise
+## Notes: Personal tweaks for the Blizzard default UI.
+## Author: Adam /*SLACKWISE*/ Flanczewski
+## Version: 0.1
+## X-Website: http://slackwise.net/projects/Slackwise
+## X-Feedback: contact@slackwise.net
+Slackwise.lua

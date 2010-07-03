@@ -40,19 +40,12 @@ function Slackwow_ZenMode()
     end
     if not SexyCooldownMAIN:IsVisible() then
         --ZEN MODE ON
-        PlayerFrame:Hide()
-        PetFrame:Hide()
-        TargetFrame:Hide()
         MinimapCluster:Hide()
         MainMenuBar:Hide()
         MultiBarBottomRight:Hide()
         SexyCooldownMAIN:Show()
     else
         --ZEN MODE OFF
-        PlayerFrame:Show()
-        PetFrame:Show()
-        BuffFrame:Show()
-        TargetFrame:Show()
         MinimapCluster:Show()
         MainMenuBar:Show()
         MultiBarBottomRight:Show()

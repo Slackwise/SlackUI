@@ -16,7 +16,7 @@ end
 ]]
 
 --Sell gray items. Adapted from tekJunkSeller.
-function event:MERCHANT_SHOW()
+function events:MERCHANT_SHOW()
 	for bag = 0, NUM_BAG_SLOTS do
 		for slot = 0, GetContainerNumSlots(bag) do
 			local link = GetContainerItemLink(bag, slot)

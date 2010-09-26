@@ -1,14 +1,22 @@
 --INITIALIZE
 local addon = LibStub("AceAddon-3.0"):NewAddon(
     "Slackwow", "AceConsole-3.0", "AceEvent-3.0")
+addon.config = LibStub("AceConfig-3.0")
+_G.Slackwow = addon
+local db
+local db_defaults = {
+}
 
 --BINDINGS
 
 function addon:OnInitialize()
+    self.db = LibStub("AceDB-3.0"):New("SlackwowDB", db_defaults, true)
+    db = self.db.profile
+    self.config:RegisterOptionsTable("Slackwow", self.options, "slackwow")
 end
 
 function addon:OnEnable()
-    addon:RegisterEvent("MERCHANT_SHOW")
+    self:RegisterEvent("MERCHANT_SHOW")
 end
 
 function addon:OnDisable()

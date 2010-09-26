@@ -7,3 +7,5 @@
 ## X-Feedback: contact@slackwise.net
 embeds.xml
 Main.lua
+Bindings.lua
+Options.lua

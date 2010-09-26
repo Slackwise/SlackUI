@@ -1,4 +1,4 @@
-addon = _G.Slackwow
+local addon = _G.Slackwow
 
 function addon:SetBindings()
     local class = select(2, UnitClass("player"))
@@ -73,8 +73,6 @@ addon.bindings = {
             "ALT-CTRL-Q"                = "Revive Pet",
             "ALT-CTRL-Z"                = "Trinket",
             "ALT-SHIFT-F"               = "Eyes of the Beast"
-
-
         },
         macro = {
             "SHIFT-SPACE"               = "Mount",
@@ -87,7 +85,6 @@ addon.bindings = {
             "CTRL-X"                    = "Bandage",
             "ALT-E"                     = "MD",
             "ALT-Z"                     = "Peace"
-
         },
         item = {
         }

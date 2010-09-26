@@ -6,10 +6,10 @@ function addon:SetBindings()
     --LoadBindings(DEFAULT_BINDINGS)
 
     table.foreach(bindings.global, SetBinding)
-    table.foreach(binding[class].command, SetBinding)
-    table.foreach(binding[class].spell, SetBindingSpell)
-    table.foreach(binding[class].macro, SetBindingMacro)
-    table.foreach(binding[class].item, SetBindingItem)
+    table.foreach(bindings[class].command, SetBinding)
+    table.foreach(bindings[class].spell, SetBindingSpell)
+    table.foreach(bindings[class].macro, SetBindingMacro)
+    table.foreach(bindings[class].item, SetBindingItem)
 
     SaveBindings(2)
 end
@@ -18,16 +18,6 @@ addon.bindings = {
     global = {
         "BUTTON3"                       = "TOGGLEAUTORUN",
         "PRINTSCREEN"                   = "SCREENSHOT",
-        "SHIFT-MOUSEWHEELUP"            = "NONE",
-        "SHIFT-MOUSEWHEELDOWN"          = "NONE",
-        "SHIFT-UP"                      = "NONE",
-        "SHIFT-DOWN"                    = "NONE",
-        "G"                             = "TARGETLASTHOSTILE",
-        "B"                             = "TOGGLEBACKPACK",
-        "SHIFT-B"                       = "OPENALLBAGS",
-        "CTRL-M"                        = "TOGGLEMUSIC",
-        "ALT-M"                         = "TOGGLESOUND",
-        "CTRL-S"                        = "NONE",
         "NUMPAD0"                       = "RAIDTARGET8",
         "NUMPAD1"                       = "RAIDTARGET7",
         "NUMPAD2"                       = "RAIDTARGET2",
@@ -37,9 +27,19 @@ addon.bindings = {
         "NUMPAD6"                       = "RAIDTARGET1",
         "NUMPAD7"                       = "RAIDTARGET3",
         "NUMPADDECIMAL"                 = "RAIDTARGETNONE",
-        "CTRL-SHIFT-R"                  = "TOGGLEFPS",
+        "B"                             = "TOGGLEBACKPACK",
+        "G"                             = "TARGETLASTHOSTILE",
+        "SHIFT-B"                       = "OPENALLBAGS",
+        "SHIFT-MOUSEWHEELUP"            = "NONE",
+        "SHIFT-MOUSEWHEELDOWN"          = "NONE",
+        "SHIFT-UP"                      = "NONE",
+        "SHIFT-DOWN"                    = "NONE",
         "CTRL-H"                        = "TOGGLEUI",
+        "CTRL-M"                        = "TOGGLEMUSIC",
+        "CTRL-S"                        = "NONE",
+        "CTRL-SHIFT-R"                  = "TOGGLEFPS",
         "ALT-C"                         = "TOGGLECHARACTER0"
+        "ALT-M"                         = "TOGGLESOUND",
     },
     HUNTER = {
         command = {
@@ -57,16 +57,16 @@ addon.bindings = {
             "E"                         = "Wing Clip",
             "F"                         = "Concussive Shot",
             "T"                         = "Deterrence",
+            "SHIFT-3"                   = "Multi-Shot",
+            "SHIFT-5"                   = "Tranquilizing Shot",
+            "SHIFT-F"                   = "Serpent Sting",
+            "SHIFT-T"                   = "Frost Trap",
             "CTRL-SPACE"                = "Disengage",
             "CTRL-4"                    = "Arcane Shot",
             "CTRL-5"                    = "Viper String",
             "CTRL-Q"                    = "Mend Pet",
             "CTRL-T"                    = "Freezing Trap",
             "CTRL-Z"                    = "Feign Death",
-            "SHIFT-3"                   = "Multi-Shot",
-            "SHIFT-5"                   = "Tranquilizing Shot",
-            "SHIFT-F"                   = "Serpent Sting",
-            "SHIFT-T"                   = "Frost Trap",
             "ALT-F"                     = "Distracting Shot",
             "ALT-T"                     = "Trueshot Aura",
             "ALT-CTRL-A"                = "Readiness",
@@ -75,12 +75,12 @@ addon.bindings = {
             "ALT-SHIFT-F"               = "Eyes of the Beast"
         },
         macro = {
-            "SHIFT-SPACE"               = "Mount",
             "BUTTON4"                   = "Mouse",
             "F5"                        = "ModeSwitch",
             "C"                         = "Call",
             "Q"                         = "PetControl",
             "R"                         = "R",
+            "SHIFT-SPACE"               = "Mount",
             "CTRL-E"                    = "Engage",
             "CTRL-X"                    = "Bandage",
             "ALT-E"                     = "MD",

@@ -4,7 +4,7 @@ function addon:SetBindings()
     local class = select(2, UnitClass("player"))
     local b = addon.bindings
 
-    --LoadBindings(DEFAULT_BINDINGS)
+    LoadBindings(DEFAULT_BINDINGS)
     
     for k, v in pairs(b.global) do SetBinding(k, v) end
     for k, v in pairs(b[class].command) do SetBinding(k, v) end

@@ -38,7 +38,7 @@ addon.bindings = {
         ["CTRL-M"]                        = "TOGGLEMUSIC",
         ["CTRL-S"]                        = "NONE",
         ["CTRL-SHIFT-R"]                  = "TOGGLEFPS",
-        ["ALT-C"]                         = "TOGGLECHARACTER0"
+        ["ALT-C"]                         = "TOGGLECHARACTER0",
         ["ALT-M"]                         = "TOGGLESOUND",
     },
     HUNTER = {
@@ -47,7 +47,7 @@ addon.bindings = {
             ["4"]                         = "ACTIONBUTTON4",
             ["SHIFT-ENTER"]               = "REPLY",
             ["SHIFT-4"]                   = "ACTIONBUTTON5",
-            ["CTRL-ENTER"]                = "REPLY2"
+            ["CTRL-ENTER"]                = "REPLY2",
         },
         spell = {
             ["`"]                         = "Auto Shot",
@@ -72,7 +72,7 @@ addon.bindings = {
             ["ALT-CTRL-A"]                = "Readiness",
             ["ALT-CTRL-Q"]                = "Revive Pet",
             ["ALT-CTRL-Z"]                = "Trinket",
-            ["ALT-SHIFT-F"]               = "Eyes of the Beast"
+            ["ALT-SHIFT-F"]               = "Eyes of the Beast",
         },
         macro = {
             ["BUTTON4"]                   = "Mouse",
@@ -84,7 +84,7 @@ addon.bindings = {
             ["CTRL-E"]                    = "Engage",
             ["CTRL-X"]                    = "Bandage",
             ["ALT-E"]                     = "MD",
-            ["ALT-Z"]                     = "Peace"
+            ["ALT-Z"]                     = "Peace",
         },
         item = {
         }

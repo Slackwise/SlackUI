@@ -2,16 +2,18 @@ local addon = _G.Slackwow
 
 function addon:SetBindings()
     local class = select(2, UnitClass("player"))
+    local b = addon.bindings
 
     --LoadBindings(DEFAULT_BINDINGS)
-
-    table.foreach(bindings.global, SetBinding)
-    table.foreach(bindings[class].command, SetBinding)
-    table.foreach(bindings[class].spell, SetBindingSpell)
-    table.foreach(bindings[class].macro, SetBindingMacro)
-    table.foreach(bindings[class].item, SetBindingItem)
+    
+    for k, v in pairs(b.global) do SetBinding(k, v) end
+    for k, v in pairs(b[class].command) do SetBinding(k, v) end
+    for k, v in pairs(b[class].spell) do SetBindingSpell(k, v) end
+    for k, v in pairs(b[class].macro) do SetBindingMacro(k, v) end
+    for k, v in pairs(b[class].item) do SetBindingItem(k, v) end
 
     SaveBindings(2)
+    print(class .. " binding presets loaded!")
 end
 
 addon.bindings = {

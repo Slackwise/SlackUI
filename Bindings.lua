@@ -8,6 +8,7 @@ function addon:SetBindings()
     
     for k, v in pairs(b.global) do SetBinding(k, v) end
     for k, v in pairs(b[class].command) do SetBinding(k, v) end
+    for k, v in pairs(b[class].click) do SetBindingClick(k, v, "LeftButton") end
     for k, v in pairs(b[class].spell) do SetBindingSpell(k, v) end
     for k, v in pairs(b[class].macro) do SetBindingMacro(k, v) end
     for k, v in pairs(b[class].item) do SetBindingItem(k, v) end
@@ -31,13 +32,16 @@ addon.bindings = {
         ["NUMPADDECIMAL"]                 = "RAIDTARGETNONE",
         ["B"]                             = "TOGGLEBACKPACK",
         ["G"]                             = "TARGETLASTHOSTILE",
+        ["SHIFT-ENTER"]                   = "REPLY",
         ["SHIFT-B"]                       = "OPENALLBAGS",
         ["SHIFT-MOUSEWHEELUP"]            = "NONE",
         ["SHIFT-MOUSEWHEELDOWN"]          = "NONE",
         ["SHIFT-UP"]                      = "NONE",
         ["SHIFT-DOWN"]                    = "NONE",
+        ["CTRL-ENTER"]                    = "REPLY2",
         ["CTRL-H"]                        = "TOGGLEUI",
         ["CTRL-M"]                        = "TOGGLEMUSIC",
+        ["CTRL-L"]                        = "TOGGLEACTIONBARLOCK",
         ["CTRL-S"]                        = "NONE",
         ["CTRL-SHIFT-R"]                  = "TOGGLEFPS",
         ["ALT-C"]                         = "TOGGLECHARACTER0",
@@ -45,12 +49,20 @@ addon.bindings = {
     },
     HUNTER = {
         command = {
+            ["-"]                         = "NONE",
+            ["="]                         = "NONE",
+            ["0"]                         = "NONE",
             ["3"]                         = "ACTIONBUTTON4",
             ["4"]                         = "ACTIONBUTTON5",
-            ["SHIFT-ENTER"]               = "REPLY",
+            ["6"]                         = "NONE",
+            ["7"]                         = "NONE",
+            ["8"]                         = "NONE",
+            ["9"]                         = "NONE",
             ["SHIFT-3"]                   = "ACTIONBUTTON3",
-            ["CTRL-ENTER"]                = "REPLY2",
             ["CTRL-F"]                    = "ACTIONBUTTON12",
+        },
+        click = {
+            ["ALT-SHIFT-Q"]               = "PetActionButton1",
         },
         spell = {
             ["2"]                         = "Kill Command",
@@ -58,7 +70,6 @@ addon.bindings = {
             ["E"]                         = "Wing Clip",
             ["F"]                         = "Concussive Shot",
             ["T"]                         = "Deterrence",
-            ["SHIFT-3"]                   = "Multi-Shot",
             ["SHIFT-4"]                   = "Arcane Shot",
             ["SHIFT-5"]                   = "Widow Venom",
             ["SHIFT-C"]                   = "Camouflage",
@@ -75,7 +86,6 @@ addon.bindings = {
             ["ALT-F"]                     = "Distracting Shot",
             ["ALT-T"]                     = "Trueshot Aura",
             ["ALT-SHIFT-F"]               = "Eyes of the Beast",
-            ["ALT-SHIFT-Q"]               = "Move To",
             ["ALT-CTRL-A"]                = "Readiness",
             ["ALT-CTRL-Q"]                = "Revive Pet",
             ["ALT-CTRL-Z"]                = "Trinket",

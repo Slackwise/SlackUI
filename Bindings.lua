@@ -30,6 +30,7 @@ addon.bindings = {
         ["NUMPAD6"]                       = "RAIDTARGET1",
         ["NUMPAD7"]                       = "RAIDTARGET3",
         ["NUMPADDECIMAL"]                 = "RAIDTARGETNONE",
+        ["F4"]                            = "TOGGLEFPS",
         ["B"]                             = "TOGGLEBACKPACK",
         ["G"]                             = "TARGETLASTHOSTILE",
         ["SHIFT-ENTER"]                   = "REPLY",

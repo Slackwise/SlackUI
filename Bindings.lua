@@ -21,6 +21,7 @@ addon.bindings = {
     global = {
         ["BUTTON3"]                       = "TOGGLEAUTORUN",
         ["PRINTSCREEN"]                   = "SCREENSHOT",
+        ["NUMLOCK"]                       = "NONE",
         ["NUMPAD0"]                       = "RAIDTARGET8",
         ["NUMPAD1"]                       = "RAIDTARGET7",
         ["NUMPAD2"]                       = "RAIDTARGET2",

@@ -92,7 +92,6 @@ addon.bindings = {
             ["CTRL-Z"]                    = "Feign Death",
             ["ALT-F"]                     = "Distracting Shot",
             ["ALT-T"]                     = "Explosive Trap",
-            ["ALT-SHIFT-F"]               = "Eyes of the Beast",
             ["ALT-CTRL-A"]                = "Readiness",
             ["ALT-CTRL-Q"]                = "Revive Pet",
             ["ALT-CTRL-Z"]                = "Trinket",
@@ -108,8 +107,8 @@ addon.bindings = {
             ["SHIFT-SPACE"]               = "Mount",
             ["CTRL-X"]                    = "Bandage",
             ["ALT-E"]                     = "MD",
-            ["ALT-R"]                     = "5min",
             ["ALT-Z"]                     = "Peace",
+            ["ALT-CTRL-S"]                = "5min",
         },
         item = {
         }

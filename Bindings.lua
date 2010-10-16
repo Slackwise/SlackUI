@@ -108,6 +108,7 @@ addon.bindings = {
             ["SHIFT-SPACE"]               = "Mount",
             ["CTRL-X"]                    = "Bandage",
             ["ALT-E"]                     = "MD",
+            ["ALT-R"]                     = "5min",
             ["ALT-Z"]                     = "Peace",
         },
         item = {

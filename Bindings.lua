@@ -20,6 +20,9 @@ end
 addon.bindings = {
     global = {
         ["BUTTON3"]                       = "TOGGLEAUTORUN",
+        ["HOME"]                          = "SETVIEW1",
+        ["SHIFT-HOME"]                    = "SETVIEW2",
+        ["END"]                           = "SETVIEW3",
         ["PRINTSCREEN"]                   = "SCREENSHOT",
         ["NUMLOCK"]                       = "NONE",
         ["NUMPAD0"]                       = "RAIDTARGET8",

@@ -94,7 +94,7 @@ addon.bindings = {
             ["SHIFT-4"]                   = "Arcane Shot",
             ["SHIFT-5"]                   = "Widow Venom",
             ["SHIFT-F"]                   = "Serpent Sting",
-            ["SHIFT-G"]                   = "Readiness",
+            ["CTRL-G"]                    = "Readiness",
             ["SHIFT-T"]                   = "Ice Trap",
             ["CTRL-3"]                    = "Multi-Shot",
             ["CTRL-4"]                    = "Tranquilizing Shot",
@@ -110,7 +110,7 @@ addon.bindings = {
             ["BUTTON4"]                   = "Mouse",
             ["ALT-BUTTON4"]               = "MouseAlt",
             ["1"]                         = "Engage",
-            ["G"]                         = "Burst!",
+            ["SHIFT-G"]                   = "Burst!",
             ["F5"]                        = "ModeSwitch",
             ["SHIFT-C"]                   = "Call",
             ["Q"]                         = "PetControl",
@@ -121,7 +121,7 @@ addon.bindings = {
         },
         item = {
             ["CTRL-X"]                    = "Heavy Embersilk Bandage",
-            ["ALT-CTRL-Z"]                = "Medallion of the Alliance",
+            ["G"]                         = "Medallion of the Alliance",
         }
     }
 }

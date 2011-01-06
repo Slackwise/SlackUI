@@ -98,8 +98,9 @@ addon.bindings = {
             ["SHIFT-T"]                   = "Ice Trap",
             ["CTRL-3"]                    = "Multi-Shot",
             ["SHIFT-5"]                   = "Tranquilizing Shot",
-            ["CTRL-Q"]                    = "Mend Pet",
+            ["SHIFT-CTRL-Q"]              = "Mend Pet",
             ["CTRL-T"]                    = "Freezing Trap",
+            ["CTRL-Q"]                    = "Clench", --Scorpid PvP skill
             ["ALT-F"]                     = "Distracting Shot",
             ["ALT-T"]                     = "Snake Trap",
             ["ALT-CTRL-R"]                = "Explosive Trap",
@@ -123,5 +124,12 @@ addon.bindings = {
             ["CTRL-X"]                    = "Heavy Embersilk Bandage",
             ["G"]                         = "Medallion of the Alliance",
         }
-    }
+    },
+    DEATHKNIGHT = {
+        command = {},
+        click = {},
+        spell = {},
+        macro = {},
+        item = {},
+    },
 }

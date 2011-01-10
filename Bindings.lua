@@ -121,6 +121,7 @@ addon.bindings = {
             ["ALT-Z"]                     = "Peace",
         },
         item = {
+            ["G"]                         = "Medallion of the Alliance",
             ["CTRL-X"]                    = "Heavy Embersilk Bandage",
         }
     },

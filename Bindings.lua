@@ -99,7 +99,6 @@ addon.bindings = {
             ["CTRL-3"]                    = "Multi-Shot",
             ["SHIFT-5"]                   = "Tranquilizing Shot",
             ["CTRL-T"]                    = "Freezing Trap",
-            ["CTRL-Q"]                    = "Clench", --Scorpid PvP skill
             ["CTRL-SHIFT-Q"]              = "Mend Pet",
             ["ALT-F"]                     = "Distracting Shot",
             ["ALT-T"]                     = "Snake Trap",
@@ -117,6 +116,7 @@ addon.bindings = {
             ["Q"]                         = "PetControl",
             ["R"]                         = "R",
             ["SHIFT-SPACE"]               = "Mount",
+            ["CTRL-Q"]                    = "PetSpecial",
             ["ALT-E"]                     = "MD",
             ["ALT-Z"]                     = "Peace",
         },

@@ -103,9 +103,9 @@ addon.bindings = {
             ["ALT-F"]                     = "Distracting Shot",
             ["ALT-T"]                     = "Snake Trap",
             ["ALT-CTRL-F"]                = "Scare Beast",
-            ["ALT-CTRL-R"]                = "Explosive Trap",
             ["ALT-CTRL-Q"]                = "Revive Pet",
             ["ALT-CTRL-S"]                = "Survey",
+            ["ALT-CTRL-T"]                = "Explosive Trap",
         },
         macro = {
             ["BUTTON4"]                   = "Mouse",

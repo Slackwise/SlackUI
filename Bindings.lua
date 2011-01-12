@@ -159,6 +159,7 @@ addon.bindings = {
             ["CTRL-R"]                    = "Dark Simulacrum",
             ["ALT-1"]                     = "Blood Tap",
             ["ALT-E"]                     = "Festering Strike",
+            ["ALT-F"]                     = "Path of Frost",
             ["ALT-G"]                     = "Death Gate",
             ["ALT-CTRL-A"]                = "Army of the Dead",
         },

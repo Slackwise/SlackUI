@@ -152,7 +152,6 @@ addon.bindings = {
             ["SHIFT-F"]                   = "Strangulate",
             ["SHIFT-Q"]                   = "Chains of Ice",
             ["SHIFT-R"]                   = "Death Coil",
-            ["CTRL-3"]                    = "Bone Shield",
             ["CTRL-4"]                    = "Horn of Winter",
             ["CTRL-C"]                    = "Icebound Fortitude",
             ["CTRL-F"]                    = "Hungering Cold",
@@ -168,6 +167,7 @@ addon.bindings = {
             ["E"]                         = "Blood", --Heart Strike or Blood
             ["R"]                         = "Rune",
             ["SHIFT-SPACE"]               = "Mount",
+            ["CTRL-3"]                    = "SpecBuff",
             ["SHIFT-G"]                   = "Licheal",
             ["ALT-R"]                     = "RaisePact",
         },

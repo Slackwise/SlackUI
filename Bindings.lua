@@ -158,6 +158,7 @@ addon.bindings = {
             ["CTRL-F"]                    = "Hungering Cold",
             ["CTRL-R"]                    = "Dark Simulacrum",
             ["ALT-1"]                     = "Blood Tap",
+            ["ALT-4"]                     = "Icy Touch",
             ["ALT-E"]                     = "Festering Strike",
             ["ALT-F"]                     = "Path of Frost",
             ["ALT-G"]                     = "Death Gate",

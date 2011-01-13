@@ -154,6 +154,7 @@ addon.bindings = {
             ["CTRL-3"]                    = "Bone Shield",
             ["CTRL-4"]                    = "Horn of Winter",
             ["CTRL-C"]                    = "Icebound Fortitude",
+            ["CTRL-E"]                    = "Obliterate",
             ["CTRL-F"]                    = "Hungering Cold",
             ["CTRL-R"]                    = "Dark Simulacrum",
             ["ALT-1"]                     = "Blood Tap",

@@ -163,7 +163,7 @@ addon.bindings = {
             ["ALT-CTRL-A"]                = "Army of the Dead",
         },
         macro = {
-            ["4]                          = "Frost",
+            ["4"]                         = "Frost",
             ["5"]                         = "Ult",
             ["E"]                         = "Blood", --Heart Strike or Blood
             ["R"]                         = "Rune",

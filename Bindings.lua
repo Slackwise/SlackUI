@@ -123,7 +123,7 @@ addon.bindings = {
         },
         item = {
             ["SHIFT-G"]                   = "Medallion of the Alliance",
-            ["CTRL-X"]                    = "Heavy Embersilk Bandage",
+            ["CTRL-X"]                    = "Dense Embersilk Bandage",
         }
     },
     DEATHKNIGHT = {

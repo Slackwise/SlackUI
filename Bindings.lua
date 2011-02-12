@@ -97,6 +97,7 @@ addon.bindings = {
             ["CTRL-G"]                    = "Readiness",
             ["SHIFT-T"]                   = "Ice Trap",
             ["CTRL-3"]                    = "Multi-Shot",
+            ["CTRL-4"]                    = "Cobra Shot",
             ["SHIFT-5"]                   = "Tranquilizing Shot",
             ["CTRL-T"]                    = "Freezing Trap",
             ["CTRL-SHIFT-Q"]              = "Mend Pet",

@@ -13,7 +13,11 @@ function addon:SetBindings()
   for k, v in pairs(b[class].macro) do SetBindingMacro(k, v) end
   for k, v in pairs(b[class].item) do SetBindingItem(k, v) end
 
-  SaveBindings(2)
+  if IsClassic() then
+    AttemptToSaveBindings(2)
+  else
+    SaveBindings(2)
+  end
   print(class .. " binding presets loaded!")
 end
 

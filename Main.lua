@@ -26,6 +26,11 @@ function addon:MERCHANT_SHOW()
   SellGreyItems()
 end
 
+function IsClassic()
+  -- #TODO: Find the most foolproof way to check if we're in Classic
+  return not SaveBindings -- Renamed to AttemptToSaveBindings: https://wow.gamepedia.com/API_SaveBindings
+end
+
 function SellGreyItems()
 	for bag = 0, NUM_BAG_SLOTS do
 		for slot = 0, GetContainerNumSlots(bag) do

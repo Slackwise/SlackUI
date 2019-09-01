@@ -22,8 +22,11 @@ end
 function addon:OnDisable()
 end
 
---Sell gray items. Adapted from tekJunkSeller.
 function addon:MERCHANT_SHOW()
+  SellGreyItems()
+end
+
+function SellGreyItems()
 	for bag = 0, NUM_BAG_SLOTS do
 		for slot = 0, GetContainerNumSlots(bag) do
 			local link = GetContainerItemLink(bag, slot)
@@ -31,7 +34,7 @@ function addon:MERCHANT_SHOW()
 				UseContainerItem(bag, slot)
 			end
 		end
-	end
+  end
 end
 
 --[[

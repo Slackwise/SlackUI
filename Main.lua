@@ -14,7 +14,7 @@ function addon:OnInitialize()
   db = self.db.profile
   self.config:RegisterOptionsTable("Slackwow", self.options, "slackwow")
 
-  SetMaxCameraDistance()
+  addon.SetMaxCameraDistance()
 end
 
 function addon:OnEnable()

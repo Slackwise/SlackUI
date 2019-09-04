@@ -13,6 +13,8 @@ function addon:OnInitialize()
   self.db = LibStub("AceDB-3.0"):New("SlackwowDB", db_defaults, true)
   db = self.db.profile
   self.config:RegisterOptionsTable("Slackwow", self.options, "slackwow")
+
+  SetMaxCameraDistance()
 end
 
 function addon:OnEnable()
@@ -29,6 +31,10 @@ end
 function addon:IsClassic()
   -- #TODO: Find the most foolproof way to check if we're in Classic
   return not SaveBindings -- Renamed to AttemptToSaveBindings: https://wow.gamepedia.com/API_SaveBindings
+end
+
+function addon:SetMaxCameraDistance()
+  SetCVar("cameraDistanceMaxZoomFactor", 2.6)
 end
 
 function addon:SellGreyItems()

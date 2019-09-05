@@ -158,6 +158,7 @@ addon.bindings = {
       {"F",                         "spell",     "Concussive Shot"},
       {"SHIFT-F",                   "spell",     "Scatter Shot"},
       {"CTRL-F",                    "spell",     "Counter Shot"},
+      {"ALT-F",                     "spell",     "Binding Shot"},
       {"Z",                         "spell",     "Camouflage"},
       {"CTRL-Z",                    "spell",     "Feign Death"},
       {"ALT-Z",                     "macro",     "Peace"},

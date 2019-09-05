@@ -133,7 +133,7 @@ addon.bindings = {
       {"3",                         "spell",     "Multi-Shot"},
       {"4",                         "spell",     "Arcane Shot"},
       {"SHIFT-4",                   "spell",     "Aimed Shot"},
-      {"5",                         "command",   "NONE"},
+      {"5",                         "spell",     "A Murder of Crows"},
       {"6",                         "macro",     "ChainEagle"},
       {"7",                         "command",   "NONE"},
       {"8",                         "command",   "NONE"},

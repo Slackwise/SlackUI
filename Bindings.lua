@@ -2,7 +2,6 @@ local addon = _G.Slackwow
 
 addon.bindingFunctions = {
   ["command"] = SetBinding,
-  ["click"]   = SetBindingClick,
   ["spell"]   = SetBindingSpell,
   ["macro"]   = SetBindingMacro,
   ["item"]    = SetBindingItem
@@ -12,11 +11,7 @@ function addon.SetBinding(binding)
   local key   = binding[1]
   local type  = binding[2]
   local name  = binding[3]
-  if type == "click" then
-    addon.bindingFunctions[type](key, name, "LeftClick")
-  else
-    addon.bindingFunctions[type](key, name)
-  end
+  addon.bindingFunctions[type](key, name)
 end
 
 function addon:SetBindings()

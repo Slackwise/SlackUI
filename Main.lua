@@ -33,6 +33,14 @@ function addon:IsClassic()
   return not SaveBindings -- Renamed to AttemptToSaveBindings: https://wow.gamepedia.com/API_SaveBindings
 end
 
+function addon:GetGameType()
+  if addon.IsClassic() then
+    return "classic"
+  else
+    return "retail"
+  end
+end
+
 function addon:SetMaxCameraDistance()
   SetCVar("cameraDistanceMaxZoomFactor", 2.6)
 end

@@ -8,9 +8,7 @@ addon.bindingFunctions = {
 }
 
 function addon.SetBinding(binding)
-  local key   = binding[1]
-  local type  = binding[2]
-  local name  = binding[3]
+  local key, type, name = unpack(binding)
   addon.bindingFunctions[type](key, name)
 end
 
@@ -22,13 +20,7 @@ function addon:SetBindings()
   end
 
   local class = string.lower(select(2, UnitClass("player")))
-  local game
-  if addon.IsClassic() then
-    game = "classic"
-  else
-    game = "retail"
-  end
-
+  local game = addon.GetGameType()
   for _, binding in ipairs(addon.bindings[game][class]) do
     addon.SetBinding(binding)
   end

@@ -154,7 +154,7 @@ addon.bindings = {
       {"V",                         "spell",     "Exhilaration"},
       {"SHIFT-V",                   "spell",     "Survival of the Fittest"},
       {"CTRL-V",                    "spell",     "Aspect of the Turtle"},
-      {"ALT-CTRL-V",                "item",      "Dense Embersilk Bandage"},
+      {"CTRL-X",                    "item",      "Dense Embersilk Bandage"},
       {"C",                         "spell",     "Aspect of the Cheetah"},
       {"SHIFT-C",                   "spell",     "Gladiator's Medallion"},
       {"CTRL-C",                    "macro",     "Call"},

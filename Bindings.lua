@@ -159,8 +159,7 @@ addon.bindings = {
       {"SHIFT-C",                   "spell",     "Gladiator's Medallion"},
       {"CTRL-C",                    "macro",     "Call"},
       {"CTRL-SPACE",                "spell",     "Disengage"},
-      {"BUTTON4",                   "macro",     "Mouse"},
-      {"ALT-BUTTON4",               "macro",     "MouseAlt"}
+      {"SHIFT-BUTTON3",             "spell",     "Hunter's Mark"},
     }
   },
   classic = {

@@ -81,10 +81,10 @@
           (print (.. "Arg " i " = " v))
           (table.insert Self.db.global.log (.. "Arg " i " = " v)))))))
 
-(fn Self:OnInitialize []
-  (set Self.db (. LibStub "AceDB-3.0" :New "SlackwiseTweaksDB" dbDefaults))
+(fn OnInitialize [self]
+  (set self.db (. LibStub "AceDB-3.0" :New "SlackwiseTweaksDB" dbDefaults))
   (. config :RegisterOptionsTable "SlackwiseTweaks" options "slack")
-  (set Self.configDialog (. LibStub "AceConfigDialog-3.0" :AddToBlizOptions "SlackwiseTweaks")))
+  (set self.configDialog (. LibStub "AceConfigDialog-3.0" :AddToBlizOptions "SlackwiseTweaks")))
 
 (fn isInitialized []
   (not (not (get Self "configDialog"))))

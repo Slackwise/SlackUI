@@ -7,4 +7,5 @@
 ## X-Feedback: https://github.com/Slackwise
 ## SavedVariables: SlackwiseTweaksDB
 ## RequiredDeps: Ace3
+embeds.xml
 SlackwiseTweaks.lua

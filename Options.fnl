@@ -1,4 +1,3 @@
-;; Converted from Options.lua to Fennel
 (local addonName _ ...)
 (set _G.SlackwiseTweaks)
 

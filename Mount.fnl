@@ -1,4 +1,3 @@
-;; Converted from Mount.lua to Fennel
 (set _G.SlackwiseTweaks)
 
 (fn handleDragonriding []

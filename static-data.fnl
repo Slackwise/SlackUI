@@ -1,4 +1,3 @@
-;; Converted from StaticData.lua to Fennel
 (set _G.SlackwiseTweaks)
 
 ;; MOUNT_IDS table

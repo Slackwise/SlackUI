@@ -1,4 +1,3 @@
-;; Converted from Slackwise.lua to Fennel
 (set _G.SlackwiseTweaks)
 
 ;; MOUNTS_BY_USAGE table

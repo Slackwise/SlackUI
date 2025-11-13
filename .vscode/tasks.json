@@ -4,7 +4,7 @@
 		{
 			"label": "Build SlackwiseTweaks",
 			"type": "shell",
-			"command": "fennel --compile main.fnl",
+			"command": "fennel-1.6.0.exe --compile main.fnl",
 			"args": [],
 			"problemMatcher": [
 				"$gcc"

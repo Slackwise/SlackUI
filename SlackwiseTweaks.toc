@@ -7,12 +7,4 @@
 ## X-Feedback: https://github.com/Slackwise
 ## SavedVariables: SlackwiseTweaksDB
 ## RequiredDeps: Ace3
-Init.lua
-## lamda/dist/lamda.lua
-embeds.xml
-StaticData.lua
-Core.lua
-Bindings.lua
-Options.lua
-Mount.lua
-Slackwise.lua
+SlackwiseTweaks.lua

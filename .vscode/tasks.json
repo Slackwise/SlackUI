@@ -2,7 +2,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Run Fennel Compiler",
+			"label": "Build SlackwiseTweaks",
 			"type": "shell",
 			"command": "fennel --compile main.fnl",
 			"args": [],

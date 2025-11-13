@@ -6,8 +6,8 @@ _G.SlackwiseTweaks = Self
 Self.Self = Self
 setmetatable(Self, {__index = _G})
 setfenv(1, Self)
-local addonName = Self[1]
-local addonTable = Self[2]
+local addonName = Self.addonName
+local addonTable = Self.addonTable
 local dbDefaults = {global = {log = {}, isDebugging = false}, profile = {mounts = {ground = nil, ["ground-showoff"] = nil, skyriding = nil, ["skyriding-showoff"] = nil, steadyflight = nil, ["steadyflight-showoff"] = nil, water = nil, ["water-showoff"] = nil, ["ground-passenger"] = nil, ["ground-passenger-showoff"] = nil, ["skyriding-passenger"] = nil, ["skyriding-passenger-showoff"] = nil, ["steadyflight-passenger"] = nil, ["steadyflight-passenger-showoff"] = nil}}}
 local function getBattletag()
   return select(2, BNGetInfo())

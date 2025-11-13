@@ -10,7 +10,7 @@
 (setmetatable Self {:__index _G})
 (setfenv 1 Self)
 
-(local [addonName addonTable] Self)
+(local {: addonName : addonTable} Self)
 
 (local dbDefaults
   {:global {:isDebugging false :log []}

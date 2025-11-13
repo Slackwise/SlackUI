@@ -4,7 +4,7 @@
 		{
 			"label": "Build SlackwiseTweaks",
 			"type": "shell",
-			"command": "fennel-1.6.0.exe --compile init.fnl",
+			"command": "fennel-1.6.0.exe --compile init.fnl > SlackwiseTweaks.lua",
 			"args": [],
 			"problemMatcher": [],
 			"group": {

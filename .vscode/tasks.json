@@ -6,10 +6,11 @@
 			"type": "shell",
 			"command": "fennel-1.6.0.exe --compile main.fnl",
 			"args": [],
-			"problemMatcher": [
-				"$gcc"
-			],
-			"group": "build"
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
 		}
 	]
 }

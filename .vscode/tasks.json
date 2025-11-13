@@ -4,7 +4,7 @@
 		{
 			"label": "Run Fennel Compiler",
 			"type": "shell",
-			"command": "fennel --compile Init.fnl",
+			"command": "fennel --compile main.fnl",
 			"args": [],
 			"problemMatcher": [
 				"$gcc"

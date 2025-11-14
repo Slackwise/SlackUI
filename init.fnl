@@ -1,99 +1,61 @@
-(var Self (LibStub "AceAddon-3.0" :NewAddon
-  "SlackwiseTweaks"
-  "AceConsole-3.0"
-  "AceEvent-3.0"))
-(set Self.config (LibStub "AceConfig-3.0"))
-(set Self.frame (CreateFrame "Frame" "SlackwiseTweaks"))
-(set Self.itemBindingFrame (CreateFrame "Frame" "SlackwiseTweaks Item Bindings"))
-(set (_G.SlackwiseTweaks) Self)
+(local Self (: (Lib-stub :AceAddon-3.0) :NewAddon :SlackwiseTweaks
+               :AceConsole-3.0 :AceEvent-3.0))
+(set Self.config (Lib-stub :AceConfig-3.0))
+(set Self.frame (Create-frame :Frame :SlackwiseTweaks))
+(set Self.itemBindingFrame
+     (Create-frame :Frame "SlackwiseTweaks Item Bindings"))
+(set _G.SlackwiseTweaks Self)
 (set Self.Self Self)
 (setmetatable Self {:__index _G})
 (setfenv 1 Self)
-
-(local {: addonName : addonTable} Self)
-
-(local dbDefaults
-  {:global {:isDebugging false :log []}
-   :profile {:mounts {
-     :ground nil
-     :ground-showoff nil
-     :skyriding nil
-     :skyriding-showoff nil
-     :steadyflight nil
-     :steadyflight-showoff nil
-     :water nil
-     :water-showoff nil
-     :ground-passenger nil
-     :ground-passenger-showoff nil
-     :skyriding-passenger nil
-     :skyriding-passenger-showoff nil
-     :steadyflight-passenger nil
-     :steadyflight-passenger-showoff nil}}})
-
-(fn getBattletag []
-  (select 2 (BNGetInfo)))
-
-(fn isSlackwise []
-  (= (getBattletag) "Slackwise#1121"))
-
-(fn isTester []
-  (isSlackwise))
-
-(fn isRetail []
-  (if (= WOW_PROJECT_ID WOW_PROJECT_MAINLINE)
-    true
-    false))
-
-(fn isClassic []
-  (if (= WOW_PROJECT_ID WOW_PROJECT_CLASSIC)
-    true
-    false))
-
-(fn getGameType []
-  (cond
-    (isRetail) "RETAIL"
-    (isClassic) "CLASSIC"
-    :else "UNKNOWN"))
-
-(fn isDebugging []
-  (if (isInitialized)
-    Self.db.global.isDebugging
-    (if (isSlackwise)
-      true
-      false)))
-
-(local COLOR_START "\124c")
-(local COLOR_END "\124r")
-
-(fn color [color]
-  (fn [text]
-    (.. COLOR_START "FF" color text COLOR_END)))
-
-(local grey (color "AAAAAA"))
-
-(fn log [message & args]
-  (when (isDebugging)
+(global (addon-name addon-table) ...)
+(global db-defaults
+        {:global {:isDebugging false :log {}}
+         :profile {:mounts {:ground nil
+                            :ground-passenger nil
+                            :ground-passenger-showoff nil
+                            :ground-showoff nil
+                            :skyriding nil
+                            :skyriding-passenger nil
+                            :skyriding-passenger-showoff nil
+                            :skyriding-showoff nil
+                            :steadyflight nil
+                            :steadyflight-passenger nil
+                            :steadyflight-passenger-showoff nil
+                            :steadyflight-showoff nil
+                            :water nil
+                            :water-showoff nil}}})
+(fn _G.get-battletag [] (select 2 (BNGet-info)))
+(fn _G.is-slackwise []
+  (or (= (get-battletag) "Slackwise#1121") false))
+(fn _G.is-tester [] (is-slackwise))
+(fn _G.is-retail [] (if (= WOW_PROJECT_ID WOW_PROJECT_MAINLINE) true false))
+(fn _G.is-classic [] (if (= WOW_PROJECT_ID WOW_PROJECT_CLASSIC) true false))
+(fn _G.get-game-type []
+  (if (is-retail) :RETAIL
+      (is-classic) :CLASSIC
+      :UNKNOWN))
+(fn _G.is-debugging []
+  (when (is-initialized)
+    (let [___antifnl_rtn_1___ Self.db.global.isDebugging]
+      (lua "return ___antifnl_rtn_1___")))
+  (if (is-slackwise) true false))
+(global COLOR_START :|c)
+(global COLOR_END :|r)
+(fn _G.color [color] (fn [text] (.. COLOR_START :FF color text COLOR_END)))
+(global grey (color :AAAAAA))
+(fn _G.log [message ...]
+  (when (is-debugging)
     (print (.. (grey (date)) "  " message))
-    (when (isInitialized)
+    (when (is-initialized)
       (table.insert Self.db.global.log (.. (date) "  " message))
-      (when args
-        (each [i v (ipairs args)]
-          (print (.. "Arg " i " = " v))
+      (when arg
+        (each [i v (ipairs arg)] (print (.. "Arg " i " = " v))
           (table.insert Self.db.global.log (.. "Arg " i " = " v)))))))
-
-(fn OnInitialize [self]
-  (set self.db (LibStub "AceDB-3.0" :New "SlackwiseTweaksDB" dbDefaults))
-  (. config :RegisterOptionsTable "SlackwiseTweaks" options "slack")
-  (set self.configDialog (LibStub "AceConfigDialog-3.0" :AddToBlizOptions "SlackwiseTweaks")))
-
-(fn isInitialized []
-  (not (not (get Self "configDialog"))))
-
-; (include :static-data)
-; (include :core)
-; (include :bindings)
-; (include :options)
-; (include :mount)
-; (include :slackwise)
-
-; (return) ;; #FIXME -- Workaround for Fennel returning between bundling
+(fn Self.OnInitialize [self]
+  (set Self.db (: (Lib-stub :AceDB-3.0) :New :SlackwiseTweaksDB db-defaults))
+  (config:RegisterOptionsTable :SlackwiseTweaks options :slack)
+  (set Self.configDialog (: (Lib-stub :AceConfigDialog-3.0) :AddToBlizOptions
+                            :SlackwiseTweaks)))
+(fn _G.is-initialized []
+  (not (not (. Self :configDialog))))	

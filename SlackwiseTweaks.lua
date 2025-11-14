@@ -1,68 +1,73 @@
-local Self = LibStub("AceAddon-3.0", "NewAddon", "SlackwiseTweaks", "AceConsole-3.0", "AceEvent-3.0")
-Self.config = LibStub("AceConfig-3.0")
-Self.frame = CreateFrame("Frame", "SlackwiseTweaks")
-Self.itemBindingFrame = CreateFrame("Frame", "SlackwiseTweaks Item Bindings")
+local Self = __fnl_global__Lib_2dstub("AceAddon-3.0"):NewAddon("SlackwiseTweaks", "AceConsole-3.0", "AceEvent-3.0")
+Self.config = __fnl_global__Lib_2dstub("AceConfig-3.0")
+Self.frame = __fnl_global__Create_2dframe("Frame", "SlackwiseTweaks")
+Self.itemBindingFrame = __fnl_global__Create_2dframe("Frame", "SlackwiseTweaks Item Bindings")
 _G.SlackwiseTweaks = Self
 Self.Self = Self
 setmetatable(Self, {__index = _G})
 setfenv(1, Self)
-local addonName = Self.addonName
-local addonTable = Self.addonTable
-local dbDefaults = {global = {log = {}, isDebugging = false}, profile = {mounts = {ground = nil, ["ground-showoff"] = nil, skyriding = nil, ["skyriding-showoff"] = nil, steadyflight = nil, ["steadyflight-showoff"] = nil, water = nil, ["water-showoff"] = nil, ["ground-passenger"] = nil, ["ground-passenger-showoff"] = nil, ["skyriding-passenger"] = nil, ["skyriding-passenger-showoff"] = nil, ["steadyflight-passenger"] = nil, ["steadyflight-passenger-showoff"] = nil}}}
-local function getBattletag()
-  return select(2, BNGetInfo())
+__fnl_global__addon_2dname, __fnl_global__addon_2dtable = ...
+__fnl_global__db_2ddefaults = {global = {log = {}, isDebugging = false}, profile = {mounts = {ground = nil, ["ground-passenger"] = nil, ["ground-passenger-showoff"] = nil, ["ground-showoff"] = nil, skyriding = nil, ["skyriding-passenger"] = nil, ["skyriding-passenger-showoff"] = nil, ["skyriding-showoff"] = nil, steadyflight = nil, ["steadyflight-passenger"] = nil, ["steadyflight-passenger-showoff"] = nil, ["steadyflight-showoff"] = nil, water = nil, ["water-showoff"] = nil}}}
+_G["get-battletag"] = function()
+  return select(2, __fnl_global__BNGet_2dinfo())
 end
-local function isSlackwise()
-  return (getBattletag() == "Slackwise#1121")
+_G["is-slackwise"] = function()
+  return ((__fnl_global__get_2dbattletag() == "Slackwise#1121") or false)
 end
-local function isTester()
-  return isSlackwise()
+_G["is-tester"] = function()
+  return __fnl_global__is_2dslackwise()
 end
-local function isRetail()
+_G["is-retail"] = function()
   if (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) then
     return true
   else
     return false
   end
 end
-local function isClassic()
+_G["is-classic"] = function()
   if (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC) then
     return true
   else
     return false
   end
 end
-local function getGameType()
-  return cond(isRetail(), "RETAIL", isClassic(), "CLASSIC", "else", "UNKNOWN")
-end
-local function isDebugging()
-  if isInitialized() then
-    return Self.db.global.isDebugging
+_G["get-game-type"] = function()
+  if __fnl_global__is_2dretail() then
+    return "RETAIL"
+  elseif __fnl_global__is_2dclassic() then
+    return "CLASSIC"
   else
-    if isSlackwise() then
-      return true
-    else
-      return false
-    end
+    return "UNKNOWN"
   end
 end
-local COLOR_START = "|c"
-local COLOR_END = "|r"
-local function color(color0)
-  local function _5_(text)
-    return (COLOR_START .. "FF" .. color0 .. text .. COLOR_END)
+_G["is-debugging"] = function()
+  if __fnl_global__is_2dinitialized() then
+    local ___antifnl_rtn_1___ = Self.db.global.isDebugging
+    return ___antifnl_rtn_1___
+  else
   end
-  return _5_
+  if __fnl_global__is_2dslackwise() then
+    return true
+  else
+    return false
+  end
 end
-local grey = color("AAAAAA")
-local function log(message, ...)
-  local args = {...}
-  if isDebugging() then
+COLOR_START = "|c"
+COLOR_END = "|r"
+_G.color = function(color)
+  local function _6_(text)
+    return (COLOR_START .. "FF" .. color .. text .. COLOR_END)
+  end
+  return _6_
+end
+grey = color("AAAAAA")
+_G.log = function(message, ...)
+  if __fnl_global__is_2ddebugging() then
     print((grey(date()) .. "  " .. message))
-    if isInitialized() then
+    if __fnl_global__is_2dinitialized() then
       table.insert(Self.db.global.log, (date() .. "  " .. message))
-      if args then
-        for i, v in ipairs(args) do
+      if arg then
+        for i, v in ipairs(arg) do
           print(("Arg " .. i .. " = " .. v))
           table.insert(Self.db.global.log, ("Arg " .. i .. " = " .. v))
         end
@@ -77,148 +82,134 @@ local function log(message, ...)
     return nil
   end
 end
-local function OnInitialize(self)
-  self.db = LibStub("AceDB-3.0", "New", "SlackwiseTweaksDB", dbDefaults)
-  do local _ = config.RegisterOptionsTable.SlackwiseTweaks[options].slack end
-  self.configDialog = LibStub("AceConfigDialog-3.0", "AddToBlizOptions", "SlackwiseTweaks")
+Self.OnInitialize = function(self)
+  Self.db = __fnl_global__Lib_2dstub("AceDB-3.0"):New("SlackwiseTweaksDB", __fnl_global__db_2ddefaults)
+  config:RegisterOptionsTable("SlackwiseTweaks", options, "slack")
+  Self.configDialog = __fnl_global__Lib_2dstub("AceConfigDialog-3.0"):AddToBlizOptions("SlackwiseTweaks")
   return nil
 end
-local function isInitialized()
-  return not not get(Self, "configDialog")
+_G["is-initialized"] = function()
+  return not not Self.configDialog
 end
-return isInitialized
-local MOUNT_IDS = {Charger = 84, ["Swift Razzashi Raptor"] = 110, ["Ashes of Al'ar"] = 183, ["Time-Lost Proto-Drake"] = 265, ["Mekgineer's Chopper"] = 275, ["Ironbound Proto-Drake"] = 306, ["Sea Turtle"] = 312, ["X-45 Heartbreaker"] = 352, ["Celestial Steed"] = 376, ["Sandstone Drake"] = 407, ["Tyrael's Charger"] = 439, ["Grand Expedition Yak"] = 460, ["Sky Golem"] = 522, ["Highlord's Golden Charger"] = 885, ["Highland Drake"] = 1563, ["Winding Slitherdrake"] = 1588, ["Renewed Proto-Drake"] = 1589, ["Grotto Netherwing Drake"] = 1744, ["Algarian Stormrider"] = 1792, ["Auspicious Arborwyrm"] = 1795, ["Trader's Gilded Brutosaur"] = 2265, ["Chaos-Forged Gryphon"] = 2304}
-local ACTUALLY_FLYABLE_MAP_IDS = {CONTINENTS = {619}, ZONES = {}, MAPS = {627}}
-local NOT_ACTUALLY_FLYABLE_MAP_IDS = {CONTINENTS = {905}, ZONES = {94, 95, 97, 103, 106, 110, 122, 747, 946, 1334, 1543, 1961}, MAPS = {715, 747, 1478}}
-local ALCHEMIST_VALUE_OFFSET = 1000
-local BEST_ITEMS = {BEST_HEALING_POTIONS = {BINDING_NAME = "SLACKWISETWEAKS_BEST_HEALING_POTION", [212944] = (3839450 + ALCHEMIST_VALUE_OFFSET), [212943] = (3681800 + ALCHEMIST_VALUE_OFFSET), [212942] = (3530600 + ALCHEMIST_VALUE_OFFSET), [211880] = 3839450, [211879] = 3681800, [211878] = 3530600, [212950] = (2799950 + ALCHEMIST_VALUE_OFFSET), [212949] = (2685000 + ALCHEMIST_VALUE_OFFSET), [212948] = (2574760 + ALCHEMIST_VALUE_OFFSET), [212244] = 2799950, [212243] = 2685000, [212242] = 2574760, [207023] = 310592, [207022] = 266709, [207021] = 228992, [191380] = 160300, [191379] = 137550, [191378] = 118000, [13446] = 1750, [3928] = 900, [1710] = 585, [929] = 360, [858] = 180, [118] = 90}, BEST_MANA_POTIONS = {BINDING_NAME = "SLACKWISETWEAKS_BEST_MANA_POTION", [212947] = (270000 + ALCHEMIST_VALUE_OFFSET), [212946] = (234783 + ALCHEMIST_VALUE_OFFSET), [212945] = (204159 + ALCHEMIST_VALUE_OFFSET), [212241] = 270000, [212240] = 234783, [212239] = 204159, [212950] = (202500 + ALCHEMIST_VALUE_OFFSET), [212949] = (176087 + ALCHEMIST_VALUE_OFFSET), [212948] = (153119 + ALCHEMIST_VALUE_OFFSET), [212244] = 202500, [212243] = 176087, [212242] = 153119, [191386] = 27600, [191385] = 24000, [191384] = 20870, [13444] = 2250, [13443] = 1500, [6149] = 900, [3827] = 585, [3385] = 360, [2455] = 180}, BEST_BANDAGES = {BINDING_NAME = "SLACKWISETWEAKS_BEST_BANDAGE", [224442] = 3339000, [224441] = 2504250, [224440] = 1669500, [194050] = 50768, [194049] = 43560, [194048] = 37376, [14530] = 2000, [14529] = 1360, [8545] = 1104, [8544] = 800, [6451] = 640, [6450] = 400, [3531] = 301, [3530] = 161, [2581] = 114, [1251] = 66}}
+return _G["is-initialized"]
+setfenv(1, _G.SlackwiseTweaks)
+MOUNT_IDS = {["Algarian Stormrider"] = 1792, ["Ashes of Al'ar"] = 183, ["Auspicious Arborwyrm"] = 1795, ["Celestial Steed"] = 376, ["Chaos-Forged Gryphon"] = 2304, Charger = 84, ["Grand Expedition Yak"] = 460, ["Grotto Netherwing Drake"] = 1744, ["Highland Drake"] = 1563, ["Highlord's Golden Charger"] = 885, ["Ironbound Proto-Drake"] = 306, ["Mekgineer's Chopper"] = 275, ["Renewed Proto-Drake"] = 1589, ["Sandstone Drake"] = 407, ["Sea Turtle"] = 312, ["Sky Golem"] = 522, ["Swift Razzashi Raptor"] = 110, ["Time-Lost Proto-Drake"] = 265, ["Trader's Gilded Brutosaur"] = 2265, ["Tyrael's Charger"] = 439, ["Winding Slitherdrake"] = 1588, ["X-45 Heartbreaker"] = 352}
+ACTUALLY_FLYABLE_MAP_IDS = {CONTINENTS = {619}, MAPS = {627}, ZONES = {}}
+NOT_ACTUALLY_FLYABLE_MAP_IDS = {CONTINENTS = {905}, MAPS = {715, 747, 1478}, ZONES = {94, 95, 97, 103, 106, 110, 122, 747, 946, 1334, 1543, 1961}}
+ALCHEMIST_VALUE_OFFSET = 1000
+BEST_ITEMS = {BEST_BANDAGES = {[1251] = 66, [2581] = 114, [3530] = 161, [3531] = 301, [6450] = 400, [6451] = 640, [8544] = 800, [8545] = 1104, [14529] = 1360, [14530] = 2000, [194048] = 37376, [194049] = 43560, [194050] = 50768, [224440] = 1669500, [224441] = 2504250, [224442] = 3339000, BINDING_NAME = "SLACKWISETWEAKS_BEST_BANDAGE"}, BEST_HEALING_POTIONS = {[118] = 90, [858] = 180, [929] = 360, [1710] = 585, [3928] = 900, [13446] = 1750, [191378] = 118000, [191379] = 137550, [191380] = 160300, [207021] = 228992, [207022] = 266709, [207023] = 310592, [211878] = 3530600, [211879] = 3681800, [211880] = 3839450, [212242] = 2574760, [212243] = 2685000, [212244] = 2799950, [212942] = (3530600 + ALCHEMIST_VALUE_OFFSET), [212943] = (3681800 + ALCHEMIST_VALUE_OFFSET), [212944] = (3839450 + ALCHEMIST_VALUE_OFFSET), [212948] = (2574760 + ALCHEMIST_VALUE_OFFSET), [212949] = (2685000 + ALCHEMIST_VALUE_OFFSET), [212950] = (2799950 + ALCHEMIST_VALUE_OFFSET), BINDING_NAME = "SLACKWISETWEAKS_BEST_HEALING_POTION"}, BEST_MANA_POTIONS = {[2455] = 180, [3385] = 360, [3827] = 585, [6149] = 900, [13443] = 1500, [13444] = 2250, [191384] = 20870, [191385] = 24000, [191386] = 27600, [212239] = 204159, [212240] = 234783, [212241] = 270000, [212242] = 153119, [212243] = 176087, [212244] = 202500, [212945] = (204159 + ALCHEMIST_VALUE_OFFSET), [212946] = (234783 + ALCHEMIST_VALUE_OFFSET), [212947] = (270000 + ALCHEMIST_VALUE_OFFSET), [212948] = (153119 + ALCHEMIST_VALUE_OFFSET), [212949] = (176087 + ALCHEMIST_VALUE_OFFSET), [212950] = (202500 + ALCHEMIST_VALUE_OFFSET), BINDING_NAME = "SLACKWISETWEAKS_BEST_MANA_POTION"}}
 return nil
-local function OnEnable(self)
-  setCVars()
-  do local _ = self.RegisterEvent.MERCHANT_SHOW end
-  do local _ = self.RegisterEvent.PLAYER_ENTERING_WORLD end
-  do local _ = self.RegisterEvent.UNIT_AURA end
-  do local _ = self.RegisterEvent.PLAYER_REGEN_ENABLED end
-  do local _ = self.RegisterEvent.ACTIVE_TALENT_GROUP_CHANGED end
-  return self.RegisterEvent.BAG_UPDATE_DELAYED
+Self.OnEnable = function(self)
+  __fnl_global__set_2dcVars()
+  self:RegisterEvent("MERCHANT_SHOW")
+  self:RegisterEvent("PLAYER_ENTERING_WORLD")
+  self:RegisterEvent("UNIT_AURA")
+  self:RegisterEvent("PLAYER_REGEN_ENABLED")
+  self:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED")
+  return self:RegisterEvent("BAG_UPDATE_DELAYED")
 end
-local function OnDisable(self)
+Self.OnDisable = function(self)
 end
-local function BAG_UPDATE_DELAYED(self)
-  return bindBestUseItems()
+Self.BAG_UPDATE_DELAYED = function(self)
+  return __fnl_global__bind_2dbest_2duse_2ditems()
 end
-local function PLAYER_ENTERING_WORLD(self, eventName, isLogin, isReload)
-  setupEkil()
-  return handleDragonriding()
+Self.PLAYER_ENTERING_WORLD = function(self, event_name, is_login, is_reload)
+  __fnl_global__setup_2dekil()
+  return __fnl_global__handle_2ddragonriding()
 end
-local function MERCHANT_SHOW(self, eventName)
-  repairAllItems()
-  return sellGreyItems()
+Self.MERCHANT_SHOW = function(self, event_name)
+  __fnl_global__repair_2dall_2ditems()
+  return __fnl_global__sell_2dgrey_2ditems()
 end
-local function PLAYER_REGEN_ENABLED(self, eventName)
-  handleDragonriding()
-  return runAfterCombatActions()
+Self.PLAYER_REGEN_ENABLED = function(self, event_name)
+  __fnl_global__handle_2ddragonriding()
+  return __fnl_global__run_2dafter_2dcombat_2dactions()
 end
-local function PLAYER_REGEN_DISABLED(self, eventName)
+Self.PLAYER_REGEN_DISABLED = function(self, event_name)
 end
-local function ACTIVE_TALENT_GROUP_CHANGED(self, currentSpecID, previousSpecID)
-  return setBindings()
+Self.ACTIVE_TALENT_GROUP_CHANGED = function(self, current_spec_iD, previous_spec_iD)
+  return __fnl_global__set_2dbindings()
 end
-local function UNIT_AURA(self, eventName, unitTarget, updateInfo)
-  if (unitTarget == "player") then
-    return handleDragonriding()
+Self.UNIT_AURA = function(self, event_name, unit_target, update_info)
+  if (unit_target == "player") then
+    return __fnl_global__handle_2ddragonriding()
   else
     return nil
   end
 end
-local afterCombatActions = {}
-local function runAfterCombat(f)
-  return table.insert(afterCombatActions, f)
+__fnl_global__after_2dcombat_2dactions = {}
+_G["run-after-combat"] = function(f)
+  return table.insert(__fnl_global__after_2dcombat_2dactions, f)
 end
-local function runAfterCombatActions()
-  while (#afterCombatActions > 0) do
-    if not InCombatLockdown() then
-      table.remove(afterCombatActions)()
+_G["run-after-combat-actions"] = function()
+  while (#__fnl_global__after_2dcombat_2dactions > 0) do
+    if not __fnl_global__In_2dcombat_2dlockdown() then
+      table.remove(__fnl_global__after_2dcombat_2dactions)()
     else
     end
   end
   return nil
 end
-local function inVehicle()
-  return UnitHasVehicleUI("player")
+_G["in-vehicle"] = function()
+  return __fnl_global__Unit_2dhas_2dvehicle_2duI("player")
 end
-local function isEkil()
-  return (getBattletag() == "ekil#1612")
+_G["is-ekil"] = function()
+  return ((__fnl_global__get_2dbattletag() == "ekil#1612") or false)
 end
-local function getClassName()
-  return select(2, UnitClass("player"))
+_G["get-class-name"] = function()
+  return select(2, __fnl_global__Unit_2dclass("player"))
 end
-local function getSpecName()
-  local specIndex = GetSpecialization()
-  if specIndex then
-    log(("specIndex = " .. (specIndex or "nil")))
-    local _let_3_ = GetSpecializationInfo(specIndex)
-    local specID = _let_3_[1]
-    local specName = _let_3_[2]
-    log(("specID = " .. (specID or "nil")))
-    log(("specName = " .. (specName or "nil")))
-    if specName then
-      return strupper(specName)
+_G["get-spec-name"] = function()
+  local spec_index = __fnl_global__Get_2dspecialization()
+  if spec_index then
+    log(("specIndex = " .. (spec_index or "nil")))
+    local spec_iD, spec_name = __fnl_global__Get_2dspecialization_2dinfo(spec_index)
+    log(("specID = " .. (spec_iD or "nil")))
+    log(("specName = " .. (spec_name or "nil")))
+    if spec_name then
+      local ___antifnl_rtns_1___ = {strupper(spec_name)}
+      return (table.unpack or _G.unpack)(___antifnl_rtns_1___)
     else
-      return nil
     end
   else
-    return nil
   end
+  return nil
 end
-local function setCVars()
-  SetCVar("cameraDistanceMaxZoomFactor", 2.6)
-  return SetCVar("minimapTrackingShowAll", 1)
+_G["set-cVars"] = function()
+  __fnl_global__Set_2dcVar("cameraDistanceMaxZoomFactor", 2.6)
+  return __fnl_global__Set_2dcVar("minimapTrackingShowAll", 1)
 end
-local function repairAllItems()
-  if CanMerchantRepair() then
-    return RepairAllItems()
+_G["repair-all-items"] = function()
+  if __fnl_global__Can_2dmerchant_2drepair() then
+    return __fnl_global__Repair_2dall_2ditems()
   else
     return nil
   end
 end
-local ITEM_QUALITY_GREY = 0
-local function canCollectTransmog(itemInfo)
-  if isClassic() then
+_G["can-collect-transmog"] = function(item_info)
+  if __fnl_global__is_2dclassic() then
     return false
   else
-    local _let_7_ = C_TransmogCollection.GetItemInfo(itemInfo)
-    local itemAppearanceID = _let_7_[1]
-    local sourceID = _let_7_[2]
-    if sourceID then
-      local _let_8_ = C_TransmogCollection.GetAppearanceSourceInfo(sourceID)
-      local _ = _let_8_[1]
-      local _0 = _let_8_[2]
-      local _1 = _let_8_[3]
-      local _2 = _let_8_[4]
-      local isCollected = _let_8_[5]
-      local _3 = _let_8_[6]
-      local _4 = _let_8_[7]
-      local _5 = _let_8_[8]
-      local _6 = _let_8_[9]
-      return not isCollected
-    else
-      return false
-    end
   end
+  local item_appearance_iD, source_iD = __fnl_global__C_5fTransmog_2dcollection.GetItemInfo(item_info)
+  if source_iD then
+    local category_iD, visual_iD, can_enchant, icon, is_collected, item_link, transmog_link, unknown1, item_sub_type_index = __fnl_global__C_5fTransmog_2dcollection.GetAppearanceSourceInfo(source_iD)
+    local ___antifnl_rtn_1___ = not is_collected
+    return ___antifnl_rtn_1___
+  else
+  end
+  return false
 end
-local function sellGreyItems()
+ITEM_QUALITY_GREY = 0
+_G["sell-grey-items"] = function()
   for bag = 0, NUM_BAG_SLOTS do
     for slot = 0, C_Container.GetContainerNumSlots(bag) do
       local link = C_Container.GetContainerItemLink(bag, slot)
       if link then
-        local _let_11_ = C_Item.GetItemInfo(link)
-        local _ = _let_11_[1]
-        local itemLink = _let_11_[2]
-        local itemQuality = _let_11_[3]
-        if (itemQuality == ITEM_QUALITY_GREY) then
-          if canCollectTransmog(itemLink) then
-            print(("[SlackwiseTweaks] Not selling transmog-able item: " .. itemLink))
+        local item_name, item_link, item_quality = C_Item.GetItemInfo(link)
+        if (item_quality == ITEM_QUALITY_GREY) then
+          if __fnl_global__can_2dcollect_2dtransmog(item_link) then
+            print(("[SlackwiseTweaks] Not selling transmog-able item: " .. item_link))
           else
             C_Container.UseContainerItem(bag, slot)
           end
@@ -230,65 +221,59 @@ local function sellGreyItems()
   end
   return nil
 end
-local function isSpellKnown(spellName)
-  local _let_15_ = GetSpellLink(spellName)
-  local _ = _let_15_[1]
-  local spellID = _let_15_[2]
-  if spellID then
-    return IsSpellKnown(spellID)
+_G["is-spell-known"] = function(spell_name)
+  local link, spell_iD = __fnl_global__Get_2dspell_2dlink(spell_name)
+  if spell_iD then
+    local ___antifnl_rtns_1___ = {__fnl_global__Is_2dspell_2dknown(spell_iD)}
+    return (table.unpack or _G.unpack)(___antifnl_rtns_1___)
   else
-    return false
   end
+  return false
 end
-local function getKeyByValue(targetTable, targetValue)
-  local function _17_()
-    if (value == targetValue) then
+_G["get-key-by-value"] = function(target_table, target_value)
+  for key, value in pairs(target_table) do
+    if (value == target_value) then
       return key
     else
-      return nil
     end
   end
-  __fnl_global__each_2dpair({key, value, targetTable}, _17_())
   return nil
 end
-local function keys(targetTable)
-  local collectedKeys = {}
-  __fnl_global__each_2dpair({key, value, targetTable}, table.insert(collectedKeys, key))
-  return collectedKeys
+_G.keys = function(target_table)
+  local collected_keys = {}
+  for key, value in pairs(target_table) do
+    table.insert(collected_keys, key)
+  end
+  return collected_keys
 end
-local function findFirstElement(targetTable, kvPredicate)
-  local function _18_()
-    if kvPredicate(key, value) then
-      return {key, value}
+_G["find-first-element"] = function(target_table, kv_predicate)
+  for key, value in pairs(target_table) do
+    if kv_predicate(key, value) then
+      return key, value
     else
-      return nil
     end
   end
-  __fnl_global__each_2dpair({key, value, targetTable}, _18_())
-  return {nil, nil}
+  return nil, nil
 end
-local function findElements(targetTable, kvPredicate)
+_G["find-elements"] = function(target_table, kv_predicate)
   local found = {}
-  local function _19_()
-    if kvPredicate(key, value) then
+  for key, value in pairs(target_table) do
+    if kv_predicate(key, value) then
       found[key] = value
-      return nil
     else
-      return nil
     end
   end
-  __fnl_global__each_2dpair({key, value, targetTable}, _19_())
   return found
 end
-local function findItemsByItemIDs(itemIDs)
+_G["find-items-by-item-iDs"] = function(item_iDs)
   local found = {}
   for bag = 0, NUM_BAG_SLOTS do
     for slot = 0, C_Container.GetContainerNumSlots(bag) do
-      local containerItemInfo = C_Container.GetContainerItemInfo(bag, slot)
-      if containerItemInfo then
-        local itemName = C_Item.GetItemInfo(containerItemInfo.hyperlink)
-        if (itemName and tContains(itemIDs, containerItemInfo.itemID)) then
-          table.insert(found, containerItemInfo)
+      local container_item_info = C_Container.GetContainerItemInfo(bag, slot)
+      if container_item_info then
+        local item_name = C_Item.GetItemInfo(container_item_info.hyperlink)
+        if (item_name and __fnl_global__t_2dcontains(item_iDs, container_item_info.itemID)) then
+          table.insert(found, container_item_info)
         else
         end
       else
@@ -297,15 +282,15 @@ local function findItemsByItemIDs(itemIDs)
   end
   return found
 end
-local function findItemsByRegex(regex)
+_G["find-items-by-regex"] = function(regex)
   local found = {}
   for bag = 0, NUM_BAG_SLOTS do
     for slot = 0, C_Container.GetContainerNumSlots(bag) do
-      local containerItemInfo = C_Container.GetContainerItemInfo(bag, slot)
-      if containerItemInfo then
-        local itemName = C_Item.GetItemInfo(containerItemInfo.hyperlink)
-        if (itemName and string.match(itemName, regex)) then
-          table.insert(found, containerItemInfo)
+      local container_item_info = C_Container.GetContainerItemInfo(bag, slot)
+      if container_item_info then
+        local item_name = C_Item.GetItemInfo(container_item_info.hyperlink)
+        if (item_name and string.match(item_name, regex)) then
+          table.insert(found, container_item_info)
         else
         end
       else
@@ -314,108 +299,111 @@ local function findItemsByRegex(regex)
   end
   return found
 end
-local function groupBy(array, groupingFunction)
+_G["group-by"] = function(array, grouping_function)
   local grouped = {}
-  local function _25_()
-    local _let_24_ = groupingFunction(value)
-    local groupingKey = _let_24_[1]
-    local newValue = _let_24_[2]
+  for key, value in pairs(array) do
+    local grouping_key, new_value = grouping_function(value)
     if grouped[value] then
-      return table.insert(grouped[groupingKey], newValue)
+      table.insert(grouped[grouping_key], new_value)
     else
-      grouped[groupingKey] = {newValue}
-      return nil
+      grouped[grouping_key] = {new_value}
     end
   end
-  __fnl_global__each_2dpair({key, value, array}, _25_())
   return grouped
 end
-local function findLargestIndex(array)
-  local largestIndex = 0
-  local function _27_()
-    if (tonumber(key) and (key >= largestIndex)) then
-      largestIndex = key
-      return nil
+_G["find-largest-index"] = function(array)
+  local largest_index = 0
+  for key, value in pairs(array) do
+    if (tonumber(key) and (key >= largest_index)) then
+      largest_index = key
     else
-      return nil
     end
   end
-  __fnl_global__each_2dpair({key, value, array}, _27_())
-  return largestIndex
+  return largest_index
 end
-local function findParentMapByType(map, uiMapType)
+_G["find-parent-map-by-type"] = function(map, ui_map_type)
   if not map then
     return nil
   else
-    if ((map.mapType == uiMapType) or (map.mapType == Enum.UIMapType.Cosmic)) then
-      return map
-    else
-      return findParentMapByType(C_Map.GetMapInfo(map.parentMapID), uiMapType)
-    end
   end
+  if ((map.mapType == ui_map_type) or (map.mapType == Enum.UIMapType.Cosmic)) then
+    return map
+  else
+  end
+  return __fnl_global__find_2dparent_2dmap_2dby_2dtype(C_Map.GetMapInfo(map.parentMapID), ui_map_type)
 end
-local function getCurrentMap()
+_G["get-current-map"] = function()
   return C_Map.GetMapInfo((C_Map.GetBestMapForUnit("player") or 0))
 end
-local function getCurrentContinent()
-  local map = getCurrentMap()
+_G["get-current-continent"] = function()
+  local map = __fnl_global__get_2dcurrent_2dmap()
   if map then
-    return findParentMapByType(map, Enum.UIMapType.Continent)
+    local ___antifnl_rtns_1___ = {__fnl_global__find_2dparent_2dmap_2dby_2dtype(map, Enum.UIMapType.Continent)}
+    return (table.unpack or _G.unpack)(___antifnl_rtns_1___)
   else
-    return nil
   end
+  return nil
 end
-local function getCurrentZone()
-  local map = getCurrentMap()
+_G["get-current-zone"] = function()
+  local map = __fnl_global__get_2dcurrent_2dmap()
   if map then
-    return findParentMapByType(map, Enum.UIMapType.Zone)
+    local ___antifnl_rtns_1___ = {__fnl_global__find_2dparent_2dmap_2dby_2dtype(map, Enum.UIMapType.Zone)}
+    return (table.unpack or _G.unpack)(___antifnl_rtns_1___)
   else
-    return nil
   end
+  return nil
 end
-local function isActuallyFlyableArea()
-  local continent = getCurrentContinent()
-  local continentID
-  if continent then
-    continentID = continent.mapID
+_G["is-actually-flyable-area"] = function()
+  local continent = __fnl_global__get_2dcurrent_2dcontinent()
+  local continent_iD = ((continent and continent.mapID) or 0)
+  local zone = __fnl_global__get_2dcurrent_2dzone()
+  local zone_iD = ((zone and zone.mapID) or 0)
+  local map = __fnl_global__get_2dcurrent_2dmap()
+  local map_iD = ((map and map.mapID) or 0)
+  local listed_flyable_continent = not not __fnl_global__t_2dcontains(ACTUALLY_FLYABLE_MAP_IDS.CONTINENTS, continent_iD)
+  local listed_flyable_zone = not not __fnl_global__t_2dcontains(ACTUALLY_FLYABLE_MAP_IDS.ZONES, zone_iD)
+  local listed_flyable_map = not not __fnl_global__t_2dcontains(ACTUALLY_FLYABLE_MAP_IDS.MAPS, map_iD)
+  local listed_non_flyable_continent = not not __fnl_global__t_2dcontains(NOT_ACTUALLY_FLYABLE_MAP_IDS.CONTINENTS, continent_iD)
+  local listed_non_flyable_zone = not not __fnl_global__t_2dcontains(NOT_ACTUALLY_FLYABLE_MAP_IDS.ZONES, zone_iD)
+  local listed_non_flyable_map = not not __fnl_global__t_2dcontains(NOT_ACTUALLY_FLYABLE_MAP_IDS.MAPS, map_iD)
+  if listed_flyable_map then
+    return true
   else
-    continentID = 0
   end
-  local zone = getCurrentZone()
-  local zoneID
-  if zone then
-    zoneID = zone.mapID
+  if listed_non_flyable_map then
+    return false
   else
-    zoneID = 0
   end
-  local map = getCurrentMap()
-  local mapID
-  if map then
-    mapID = map.mapID
+  if listed_flyable_zone then
+    return true
   else
-    mapID = 0
   end
-  local listedFlyableContinent = not not tContains(ACTUALLY_FLYABLE_MAP_IDS.CONTINENTS, continentID)
-  local listedFlyableZone = not not tContains(ACTUALLY_FLYABLE_MAP_IDS.ZONES, zoneID)
-  local listedFlyableMap = not not tContains(ACTUALLY_FLYABLE_MAP_IDS.MAPS, mapID)
-  local listedNonFlyableContinent = not not tContains(NOT_ACTUALLY_FLYABLE_MAP_IDS.CONTINENTS, continentID)
-  local listedNonFlyableZone = not not tContains(NOT_ACTUALLY_FLYABLE_MAP_IDS.ZONES, zoneID)
-  local listedNonFlyableMap = not not tContains(NOT_ACTUALLY_FLYABLE_MAP_IDS.MAPS, mapID)
-  return cond(listedFlyableMap, true, listedNonFlyableMap, false, listedFlyableZone, true, listedNonFlyableZone, false, listedFlyableContinent, true, listedNonFlyableContinent, false, "else", IsFlyableArea())
+  if listed_non_flyable_zone then
+    return false
+  else
+  end
+  if listed_flyable_continent then
+    return true
+  else
+  end
+  if listed_non_flyable_continent then
+    return false
+  else
+  end
+  return __fnl_global__Is_2dflyable_2darea()
 end
-local function printDebugMapInfo()
-  local map = getCurrentMap()
-  local zone = getCurrentZone()
-  local continent = getCurrentContinent()
-  local parentMap = (C_Map.GetMapInfo(map.parentMapID) or "nil")
-  local p
-  if isDebugging() then
+_G["print-debug-map-info"] = function()
+  local map = __fnl_global__get_2dcurrent_2dmap()
+  local zone = __fnl_global__get_2dcurrent_2dzone()
+  local continent = __fnl_global__get_2dcurrent_2dcontinent()
+  local parent_map = (C_Map.GetMapInfo(map.parentMapID) or "nil")
+  if __fnl_global__is_2ddebugging() then
     p = log
   else
     p = print
   end
   p("===============================")
-  p((map.name .. ", " .. (parentMap.name or "nil")))
+  p((map.name .. ", " .. (parent_map.name or "nil")))
   p(("Zone: " .. zone.name .. " (" .. zone.mapID .. ")"))
   if continent then
     p(("Continent: " .. continent.name .. " (" .. continent.mapID .. ")"))
@@ -424,120 +412,127 @@ local function printDebugMapInfo()
   p("-------------------------------------------------------")
   p(("mapID: " .. map.mapID))
   p(("parentMapID: " .. map.parentMapID))
-  p(("mapType: " .. (getKeyByValue(Enum.UIMapType, map.mapType) or "nil") .. " (" .. (map.mapType or "nil") .. ")"))
-  p(("Outdoor: " .. tostring(IsOutdoors())))
-  p(("Submerged: " .. tostring(IsSubmerged())))
-  p(("Flyable: " .. tostring(IsFlyableArea())))
-  p(("AdvancedFlyable: " .. tostring(IsAdvancedFlyableArea())))
-  p(("ActuallyFlyable: " .. tostring(isActuallyFlyableArea())))
+  p(("mapType: " .. (__fnl_global__get_2dkey_2dby_2dvalue(Enum.UIMapType, map.mapType) or "nil") .. " (" .. (map.mapType or "nil") .. ")"))
+  p(("Outdoor: " .. tostring(__fnl_global__Is_2doutdoors())))
+  p(("Submerged: " .. tostring(__fnl_global__Is_2dsubmerged())))
+  p(("Flyable: " .. tostring(__fnl_global__Is_2dflyable_2darea())))
+  p(("AdvancedFlyable: " .. tostring(__fnl_global__Is_2dadvanced_2dflyable_2darea())))
+  p(("ActuallyFlyable: " .. tostring(__fnl_global__is_2dactually_2dflyable_2darea())))
   return p("===============================")
 end
-local DRUID_RARE_MOBS = {"Keen-eyed Cian", "Matriarch Keevah", "Moragh the Slothful", "Mosa Umbramane", "Ristar the Rabid", "Talthonei Ashwhisper"}
-local function findDruidRareMobs(vignetteGUID)
-  if not (getClassName() == "DRUID") then
+DRUID_RARE_MOBS = {"Keen-eyed Cian", "Matriarch Keevah", "Moragh the Slothful", "Mosa Umbramane", "Ristar the Rabid", "Talthonei Ashwhisper"}
+_G["find-druid-rare-mobs"] = function(vignette_gUID)
+  if (__fnl_global__get_2dclass_2dname() ~= "DRUID") then
+    return 
   else
   end
-  log(("VIGNETTE ID: " .. vignetteGUID))
-  local vignetteInfo = C_VignetteInfo.GetVignetteInfo(vignetteGUID)
-  if vignetteInfo then
-    local name = vignetteInfo.name
-    log(("VIGNETTE NAME: " .. (name or "")))
-    if tContains(DRUID_RARE_MOBS, name) then
-      return foundDruidRare(name)
-    else
-      return nil
-    end
+  log(("VIGNETTE ID: " .. vignette_gUID))
+  local vignette_info = __fnl_global__C_5fVignette_2dinfo.GetVignetteInfo(vignette_gUID)
+  if not vignette_info then
+    return 
   else
-    return nil
   end
-end
-local foundDruidRares = {}
-local function foundDruidRare(name)
-  local currentUnixTimestamp = GetServerTime()
-  local _let_40_ = GetGameTime()
-  local currentHour = _let_40_[1]
-  local currentMinute = _let_40_[2]
-  local lastTimeFound = get(foundDruidRares, name)
-  if (not lastTimeFound or isTimeWithin(lastTimeFound, (5 * 60), GetServerTime())) then
-    foundDruidRares[name] = {currentUnixTimestamp, currentHour, currentMinute}
-    return nil
+  local name = vignette_info.name
+  log(("VIGNETTE NAME: " .. (name or "")))
+  if __fnl_global__t_2dcontains(DRUID_RARE_MOBS, name) then
+    return __fnl_global__found_2ddruid_2drare(name)
   else
     return nil
   end
 end
-local function announceFoundDruidRare(name)
+__fnl_global__found_2ddruid_2drares = {}
+_G["found-druid-rare"] = function(name)
+  local current_unix_timestamp = __fnl_global__Get_2dserver_2dtime()
+  local current_hour, current_minute = __fnl_global__Get_2dgame_2dtime()
+  local last_time_found = __fnl_global__found_2ddruid_2drares[name]
+  if (not last_time_found or __fnl_global__is_2dtime_2dwithin(last_time_found, (5 * 60), __fnl_global__Get_2dserver_2dtime())) then
+    __fnl_global__found_2ddruid_2drares[name] = {current_unix_timestamp, current_hour, current_minute}
+    return nil
+  else
+    return nil
+  end
+end
+_G["announce-found-druid-rare"] = function(name)
   log(("Found druid rare: " .. name))
-  return SendChatMessage((name .. ".. spotted!"), "CHANNEL", nil, 5)
+  return __fnl_global__Send_2dchat_2dmessage(name(".. spotted!"), "CHANNEL", nil, 5)
 end
-local function isTimeWithin(originUnixTimestamp, secondsToBeWithin, currentUnixTimestamp)
-  return (currentUnixTimestamp >= (originUnixTimestamp + (secondsToBeWithin * 1000)))
+_G["is-time-within"] = function(origin_unix_timestamp, seconds_to_be_within, current_unix_timestamp)
+  return (current_unix_timestamp >= (origin_unix_timestamp + (seconds_to_be_within * 1000)))
 end
-return isTimeWithin
-_G.BINDING_HEADER_SLACKWISETWEAKS = "SlackwiseTweaks"
-_G.BINDING_NAME_SLACKWISETWEAKS_RESTART_SOUND = "Restart Sound"
-_G.BINDING_NAME_SLACKWISETWEAKS_RELOADUI = "Reload UI"
-_G.BINDING_NAME_SLACKWISETWEAKS_MOUNT = "Mount"
-_G.BINDING_NAME_SLACKWISETWEAKS_SETBINDINGS = "Load Keybindings"
-_G.BINDING_NAME_SLACKWISETWEAKS_BEST_HEALING_POTION = "Use Best Healing Potion"
-_G.BINDING_NAME_SLACKWISETWEAKS_BEST_MANA_POTION = "Use Best Mana Potion"
-_G.BINDING_NAME_SLACKWISETWEAKS_BEST_BANDAGE = "Use Best Bandage"
-local BINDINGS = {}
-BINDING_TYPE = {DEFAULT_BINDINGS = 0, ACCOUNT_BINDINGS = 1, CHARACTER_BINDINGS = 2}
-BINDINGS_FUNCTIONS = {command = SetBinding, spell = SetBindingSpell, macro = SetBindingMacro, item = SetBindingItem}
-local function setBinding(binding)
-  local key = binding[1]
-  local type = binding[2]
-  local name = binding[3]
+return _G["is-time-within"]
+BINDING_HEADER_SLACKWISETWEAKS = "SlackwiseTweaks"
+BINDING_NAME_SLACKWISETWEAKS_RESTART_SOUND = "Restart Sound"
+BINDING_NAME_SLACKWISETWEAKS_RELOADUI = "Reload UI"
+BINDING_NAME_SLACKWISETWEAKS_MOUNT = "Mount"
+BINDING_NAME_SLACKWISETWEAKS_SETBINDINGS = "Load Keybindings"
+BINDING_HEADER_SLACKWISETWEAKS = "SlackwiseTweaks"
+BINDING_NAME_SLACKWISETWEAKS_RESTART_SOUND = "Restart Sound"
+BINDING_NAME_SLACKWISETWEAKS_RELOADUI = "Reload UI"
+BINDING_NAME_SLACKWISETWEAKS_MOUNT = "Mount"
+BINDING_NAME_SLACKWISETWEAKS_SETBINDINGS = "Load Keybindings"
+BINDING_NAME_SLACKWISETWEAKS_BEST_HEALING_POTION = "Use Best Healing Potion"
+BINDING_NAME_SLACKWISETWEAKS_BEST_MANA_POTION = "Use Best Mana Potion"
+BINDING_NAME_SLACKWISETWEAKS_BEST_BANDAGE = "Use Best Bandage"
+setfenv(1, _G.SlackwiseTweaks)
+BINDINGS = {}
+BINDING_TYPE = {ACCOUNT_BINDINGS = 1, CHARACTER_BINDINGS = 2, DEFAULT_BINDINGS = 0}
+BINDINGS_FUNCTIONS = {command = __fnl_global__Set_2dbinding, item = __fnl_global__Set_2dbinding_2ditem, macro = __fnl_global__Set_2dbinding_2dmacro, spell = __fnl_global__Set_2dbinding_2dspell}
+_G["set-binding"] = function(binding)
+  local key, type, name = unpack(binding)
   return BINDINGS_FUNCTIONS[type](key, name)
 end
-local function getBindingDescription(bindingName)
-  return (_G(("BINDING_NAME_" .. bindingName)) or "")
+_G["get-binding-description"] = function(binding_name)
+  return (_G[("BINDING_NAME_" .. binding_name)] or "")
 end
-local function unbindUnwantedDefaults()
-  return SetBinding("SHIFT-T")
+_G["unbind-unwanted-defaults"] = function()
+  return __fnl_global__Set_2dbinding("SHIFT-T")
 end
-local function bindBestUseItems()
-  if InCombatLockdown() then
-    runAfterCombat(bindBestUseItems)
+_G["bind-best-use-items"] = function()
+  if __fnl_global__In_2dcombat_2dlockdown() then
+    __fnl_global__run_2dafter_2dcombat(__fnl_global__bind_2dbest_2duse_2ditems)
+    return 
   else
   end
-  ClearOverrideBindings(Self.itemBindingFrame)
-  return __fnl_global__each_2dpair({itemType, itemMap, BEST_ITEMS}, log(("Binding " .. getBindingDescription(itemMap.BINDING_NAME) .. "...")), bindBestUseItem(itemMap))
+  __fnl_global__Clear_2doverride_2dbindings(Self.itemBindingFrame)
+  for item_type, item_map in pairs(BEST_ITEMS) do
+    log(("Binding " .. __fnl_global__get_2dbinding_2ddescription(item_map.BINDING_NAME) .. "..."))
+    __fnl_global__bind_2dbest_2duse_2ditem(item_map)
+  end
+  return nil
 end
-local function bindBestUseItem(bestItemMap)
-  local containerItemInfos = findItemsByItemIDs(keys(bestItemMap))
-  if (isDebugging() and containerItemInfos) then
-    log((getBindingDescription(bestItemMap.BINDING_NAME) .. ": found items:"))
-    for i, item in ipairs(containerItemInfos) do
+_G["bind-best-use-item"] = function(best_item_map)
+  local container_item_infos = __fnl_global__find_2ditems_2dby_2ditem_2diDs(keys(best_item_map))
+  if (__fnl_global__is_2ddebugging() and container_item_infos) then
+    log((__fnl_global__get_2dbinding_2ddescription(best_item_map.BINDING_NAME) .. ": found items:"))
+    for i, item in ipairs(container_item_infos) do
       log(("    " .. item.stackCount .. "x of " .. item.itemID .. " " .. item.hyperlink))
     end
   else
   end
-  local itemsByBestStrength
+  local items_by_best_strength
   local function _3_(item)
-    return bestItemMap[item.itemID], {item.itemID, item.stackCount}
+    return best_item_map[item.itemID], {item.itemID, item.stackCount}
   end
-  itemsByBestStrength = groupBy(containerItemInfos, _3_)
-  local bestItems = itemsByBestStrength[findLargestIndex(itemsByBestStrength)]
-  if bestItems then
-    local smallestStack = 9999
-    local bestItemID = nil
-    for i, itemStack in ipairs(bestItems) do
-      local itemID = itemStack[1]
-      local stackCount = itemStack[2]
-      if (stackCount < smallestStack) then
-        smallestStack = stackCount
-        bestItemID = itemID
+  items_by_best_strength = __fnl_global__group_2dby(container_item_infos, _3_)
+  local best_items = items_by_best_strength[__fnl_global__find_2dlargest_2dindex(items_by_best_strength)]
+  if best_items then
+    local smallest_stack = 9999
+    local best_item_iD = nil
+    for i, item_stack in ipairs(best_items) do
+      local item_iD, stack_count = unpack(item_stack)
+      if (stack_count < smallest_stack) then
+        smallest_stack = stack_count
+        best_item_iD = item_iD
       else
       end
     end
-    log(("Best found smallest stack itemID: " .. bestItemID))
-    if bestItemID then
-      local desiredBindingKeys = {GetBindingKey(bestItemMap.BINDING_NAME)}
-      if (#desiredBindingKeys > 0) then
-        for i, key in ipairs(desiredBindingKeys) do
-          log(("Binding ID " .. bestItemID .. " " .. C_Item.GetItemNameByID(bestItemID) .. " to " .. key))
-          SetOverrideBindingItem(Self.itemBindingFrame, true, key, ("item:" .. bestItemID))
+    log(("Best found smallest stack itemID: " .. best_item_iD))
+    if best_item_iD then
+      local desired_binding_keys = {__fnl_global__Get_2dbinding_2dkey(best_item_map.BINDING_NAME)}
+      if (#desired_binding_keys > 0) then
+        for i, key in ipairs(desired_binding_keys) do
+          log(("Binding ID " .. best_item_iD .. " " .. C_Item.GetItemNameByID(best_item_iD) .. " to " .. key))
+          __fnl_global__Set_2doverride_2dbinding_2ditem(Self.itemBindingFrame, true, key, ("item:" .. best_item_iD))
         end
         return nil
       else
@@ -550,40 +545,40 @@ local function bindBestUseItem(bestItemMap)
     return nil
   end
 end
-local function setBindings()
-  if not isTester() then
+_G["set-bindings"] = function()
+  if not __fnl_global__is_2dtester() then
     print("SlackwiseTweaks Bindings: Work in progress. Cannot bind currently.")
+    return 
   else
   end
-  if InCombatLockdown() then
-    runAfterCombat(setBindings)
+  if __fnl_global__In_2dcombat_2dlockdown() then
+    __fnl_global__run_2dafter_2dcombat(__fnl_global__set_2dbindings)
+    return 
   else
   end
-  LoadBindings(BINDING_TYPE.DEFAULT_BINDINGS)
-  unbindUnwantedDefaults()
+  __fnl_global__Load_2dbindings(BINDING_TYPE.DEFAULT_BINDINGS)
+  __fnl_global__unbind_2dunwanted_2ddefaults()
   for _, binding in ipairs(BINDINGS.GLOBAL) do
-    setBinding(binding)
+    __fnl_global__set_2dbinding(binding)
   end
-  local game = getGameType()
-  local class = getClassName()
+  local game = __fnl_global__get_2dgame_2dtype()
+  local class = __fnl_global__get_2dclass_2dname()
   local bindings = BINDINGS[game][class]
-  if isRetail() then
-    local spec = getSpecName()
+  if __fnl_global__is_2dretail() then
+    local spec = __fnl_global__get_2dspec_2dname()
     if not spec then
       print("SlackwiseTweaks Binding: No spec currently to bind!")
     else
     end
-    if not (bindings.CLASS == nil) then
+    if (bindings.CLASS ~= nil) then
       if bindings.CLASS.PRE_SCRIPT then
         bindings.CLASS.PRE_SCRIPT()
       else
       end
       for _, binding in ipairs(bindings.CLASS) do
-        local key = binding[1]
-        local type = binding[2]
-        local name = binding[3]
+        local key, type, name = unpack(binding)
         if not ((type == "spell") and not C_Spell.DoesSpellExist(name)) then
-          setBinding(binding)
+          __fnl_global__set_2dbinding(binding)
         else
         end
       end
@@ -593,22 +588,20 @@ local function setBindings()
       end
     else
     end
-    if (spec and not (spec == "")) then
+    if (spec and (spec ~= "")) then
       if bindings[spec].PRE_SCRIPT then
         bindings[spec].PRE_SCRIPT()
       else
       end
-      do
-        local specBindings = bindings[spec]
-        if not (specBindings == nil) then
-          for _, binding in ipairs(specBindings) do
-            if not ((binding[2] == "spell") and not C_Spell.DoesSpellExist(binding[3])) then
-              setBinding(binding)
-            else
-            end
+      local spec_bindings = bindings[spec]
+      if (spec_bindings ~= nil) then
+        for _, binding in ipairs(spec_bindings) do
+          if not ((binding[2] == "spell") and not C_Spell.DoesSpellExist(binding[3])) then
+            __fnl_global__set_2dbinding(binding)
+          else
           end
-        else
         end
+      else
       end
       if bindings[spec].POST_SCRIPT then
         bindings[spec].POST_SCRIPT()
@@ -616,19 +609,17 @@ local function setBindings()
       end
     else
     end
-    SaveBindings(BINDING_TYPE.CHARACTER_BINDINGS)
+    __fnl_global__Save_2dbindings(BINDING_TYPE.CHARACTER_BINDINGS)
     return print(((spec or "CLASS-ONLY") .. " " .. class .. " binding presets loaded!"))
-  elseif isClassic() then
+  elseif __fnl_global__is_2dclassic() then
     if bindings.PRE_SCRIPT then
       bindings.PRE_SCRIPT()
     else
     end
     for _, binding in ipairs(bindings) do
-      local key = binding[1]
-      local type = binding[2]
-      local name = binding[3]
+      local key, type, name = unpack(binding)
       if not ((type == "spell") and not C_Spell.DoesSpellExist(name)) then
-        setBinding(binding)
+        __fnl_global__set_2dbinding(binding)
       else
       end
     end
@@ -636,28 +627,20 @@ local function setBindings()
       bindings.POST_SCRIPT()
     else
     end
-    SaveBindings(BINDING_TYPE.CHARACTER_BINDINGS)
+    __fnl_global__Save_2dbindings(BINDING_TYPE.CHARACTER_BINDINGS)
     return print((class .. " binding presets loaded!"))
   else
     return print("Unknown game type! Cannot rebind.")
   end
 end
-return setBindings
-local options
+return _G["set-bindings"]
 local function _1_()
-  return Self:IsEnabled()
+  return __fnl_global__set_2dbindings()
 end
 local function _2_()
-  if Self:IsEnabled() then
-    return Self:Disable()
-  else
-    return Self:Enable()
-  end
-end
-local function _4_()
   return db.global.isDebugging
 end
-local function _5_()
+local function _3_()
   db.global.isDebugging = not db.global.isDebugging
   if db.global.isDebugging then
     return print("SlackwiseTweaks Debugging ON")
@@ -665,161 +648,164 @@ local function _5_()
     return print("SlackwiseTweaks Debugging OFF")
   end
 end
-local function _7_()
-  return setBindings()
+local function _5_()
+  return Self:IsEnabled()
+end
+local function _6_()
+  if Self:IsEnabled() then
+    return Self:Disable()
+  else
+    return Self:Enable()
+  end
 end
 local function _8_()
   db:ResetDB()
   return print("SlackwiseTweaks: ALL DATA WIPED")
 end
-options = {type = "group", args = {enable = {name = "Enabled", desc = ("Enable/disable " .. addonName), type = "toggle", get = _1_, set = _2_, order = 0}, debug = {name = "Enable Debugging", desc = "Enable debugging logs and stuff", type = "toggle", get = _4_, set = _5_}, bind = {type = "execute", name = "Set Bindings", desc = "Set binding presets for current character's class and spec.", func = _7_, hidden = true}, reset = {type = "execute", name = "Reset All Data", desc = "DANGER: Wipes all settings! Cannot be undone!", func = _8_, confirm = true}}}
+options = {args = {bind = {desc = "Set binding presets for current character's class and spec.", func = _1_, hidden = true, name = "Set Bindings", type = "execute"}, debug = {desc = "Enable debugging logs and stuff", get = _2_, name = "Enable Debugging", set = _3_, type = "toggle"}, enable = {desc = ("Enable/disable " .. __fnl_global__addon_2dname), get = _5_, name = "Enabled", order = 0, set = _6_, type = "toggle"}, reset = {confirm = true, desc = "DANGER: Wipes all settings! Cannot be undone!", func = _8_, name = "Reset All Data", type = "execute"}}, type = "group"}
 return nil
-local function handleDragonriding()
-  if isTester() then
-    if isDragonriding() then
-      return bindDragonriding()
+_G["handle-dragonriding"] = function()
+  if __fnl_global__is_2dtester() then
+    if __fnl_global__is_2ddragonriding() then
+      return __fnl_global__bind_2ddragonriding()
     else
-      return unbindDragonriding()
+      return __fnl_global__unbind_2ddragonriding()
     end
   else
     return nil
   end
 end
-local isDragonridingBound = false
-local function bindDragonriding()
-  if (not InCombatLockdown() and not isDragonridingBound) then
-    SetOverrideBindingSpell(Self.frame, true, "BUTTON3", "Skyward Ascent")
-    SetOverrideBindingSpell(Self.frame, true, "SHIFT-BUTTON3", "Surge Forward")
-    SetOverrideBindingSpell(Self.frame, true, "CTRL-BUTTON3", "Whirling Surge")
-    SetOverrideBindingSpell(Self.frame, true, "BUTTON5", "Aerial Halt")
-    SetOverrideBindingSpell(Self.frame, true, "SHIFT-X", "Second Wind")
-    SetOverrideBindingSpell(Self.frame, true, "CTRL-X", "Bronze Timelock")
-    if (getClassName() == "DRUID") then
-      SetOverrideBindingMacro(Self.frame, true, "X", "X")
+__fnl_global__is_2ddragonriding_2dbound = false
+_G["bind-dragonriding"] = function()
+  if (not __fnl_global__In_2dcombat_2dlockdown() and not __fnl_global__is_2ddragonriding_2dbound) then
+    __fnl_global__Set_2doverride_2dbinding_2dspell(Self.frame, true, "BUTTON3", "Skyward Ascent")
+    __fnl_global__Set_2doverride_2dbinding_2dspell(Self.frame, true, "SHIFT-BUTTON3", "Surge Forward")
+    __fnl_global__Set_2doverride_2dbinding_2dspell(Self.frame, true, "CTRL-BUTTON3", "Whirling Surge")
+    __fnl_global__Set_2doverride_2dbinding_2dspell(Self.frame, true, "BUTTON5", "Aerial Halt")
+    __fnl_global__Set_2doverride_2dbinding_2dspell(Self.frame, true, "SHIFT-X", "Second Wind")
+    __fnl_global__Set_2doverride_2dbinding_2dspell(Self.frame, true, "CTRL-X", "Bronze Timelock")
+    if (__fnl_global__get_2dclass_2dname() == "DRUID") then
+      __fnl_global__Set_2doverride_2dbinding_2dmacro(Self.frame, true, "X", "X")
     else
-      SetOverrideBindingSpell(Self.frame, true, "X", "Aerial Halt")
+      __fnl_global__Set_2doverride_2dbinding_2dspell(Self.frame, true, "X", "Aerial Halt")
     end
-    isDragonridingBound = true
+    __fnl_global__is_2ddragonriding_2dbound = true
     return nil
   else
     return nil
   end
 end
-local function unbindDragonriding()
-  if (not InCombatLockdown() and isDragonridingBound) then
-    ClearOverrideBindings(Self.frame)
-    isDragonridingBound = false
+_G["unbind-dragonriding"] = function()
+  if (not __fnl_global__In_2dcombat_2dlockdown() and __fnl_global__is_2ddragonriding_2dbound) then
+    __fnl_global__Clear_2doverride_2dbindings(Self.frame)
+    __fnl_global__is_2ddragonriding_2dbound = false
     return nil
   else
     return nil
   end
 end
-local SKYRIDING_SPELLID = 404464
-local function isDragonriding()
-  local dragonridingSpellIds = C_MountJournal.GetCollectedDragonridingMounts()
-  if (C_UnitAuras.GetPlayerAuraBySpellID(SKYRIDING_SPELLID) and isActuallyFlyableArea()) then
-    if (GetShapeshiftForm() == 3) then
+SKYRIDING_SPELLID = 404464
+_G["is-dragonriding"] = function()
+  local dragonriding_spell_ids = __fnl_global__C_5fMount_2djournal.GetCollectedDragonridingMounts()
+  if (__fnl_global__C_5fUnit_2dauras.GetPlayerAuraBySpellID(SKYRIDING_SPELLID) and __fnl_global__is_2dactually_2dflyable_2darea()) then
+    if (__fnl_global__Get_2dshapeshift_2dform() == 3) then
       return true
-    else
-      if IsMounted() then
-        for mountId in dragonridingSpellIds do
-          local spellId = select(2, C_MountJournal.GetMountInfoByID(mountId))
-          if C_UnitAuras.GetPlayerAuraBySpellID(spellId) then
-          else
-          end
+    elseif __fnl_global__Is_2dmounted() then
+      for _, mount_id in ipairs(dragonriding_spell_ids) do
+        local spell_id = select(2, __fnl_global__C_5fMount_2djournal.GetMountInfoByID(mount_id))
+        if __fnl_global__C_5fUnit_2dauras.GetPlayerAuraBySpellID(spell_id) then
+          return true
+        else
         end
+      end
+    else
+    end
+  else
+  end
+  return false
+end
+MOUNTS_BY_USAGE = {}
+_G["setup-ekil"] = function()
+  if __fnl_global__is_2dekil() then
+    MOUNTS_BY_USAGE = {DEFAULT = {FLYING = MOUNT_IDS["Ironbound Proto-Drake"], FLYING_PASSENGER = MOUNT_IDS["Renewed Proto-Drake"], FLYING_SHOWOFF = MOUNT_IDS["Ironbound Proto-Drake"], GROUND = MOUNT_IDS["Ironbound Proto-Drake"], GROUND_PASSENGER = MOUNT_IDS["Renewed Proto-Drake"], GROUND_SHOWOFF = MOUNT_IDS["Ironbound Proto-Drake"], WATER = MOUNT_IDS["Ironbound Proto-Drake"]}}
+    return nil
+  else
+    return nil
+  end
+end
+_G["mount-by-usage"] = function(usage)
+  if __fnl_global__is_2ddebugging() then
+    __fnl_global__print_2ddebug_2dmap_2dinfo()
+  else
+  end
+  local class_mounts = (MOUNTS_BY_USAGE[__fnl_global__get_2dclass_2dname()] or MOUNTS_BY_USAGE.DEFAULT)
+  return __fnl_global__C_5fMount_2djournal.SummonByID(class_mounts[usage])
+end
+_G["mount-by-name"] = function(mount_name)
+  return __fnl_global__C_5fMount_2djournal.SummonByID(MOUNT_IDS[mount_name])
+end
+_G["is-alternative-mount-requested"] = function()
+  return __fnl_global__Is_2dmodifier_2dkey_2ddown()
+end
+_G.mount = function()
+  if __fnl_global__Is_2dmounted() then
+    Dismount()
+    return 
+  else
+  end
+  if __fnl_global__Unit_2dusing_2dvehicle("player") then
+    __fnl_global__Vehicle_2dexit()
+    return 
+  else
+  end
+  if __fnl_global__Is_2doutdoors() then
+    if (__fnl_global__is_2dactually_2dflyable_2darea() and not __fnl_global__Is_2dsubmerged()) then
+      log("FLYING AREA")
+      if __fnl_global__is_2dalternative_2dmount_2drequested() then
+        __fnl_global__mount_2dby_2dusage("FLYING_SHOWOFF")
+        return 
+      else
+      end
+      if __fnl_global__Is_2din_2dgroup() then
+        __fnl_global__mount_2dby_2dusage("FLYING_PASSENGER")
+        return 
+      else
+        __fnl_global__mount_2dby_2dusage("FLYING")
+        return 
+      end
+      return nil
+    elseif __fnl_global__Is_2dsubmerged() then
+      if __fnl_global__is_2dalternative_2dmount_2drequested() then
+        __fnl_global__mount_2dby_2dusage("FLYING")
+        return 
+      else
+      end
+      __fnl_global__mount_2dby_2dusage("WATER")
+      return nil
+    else
+      if __fnl_global__Is_2din_2dgroup() then
+        if __fnl_global__is_2dalternative_2dmount_2drequested() then
+          __fnl_global__mount_2dby_2dusage("GROUND_SHOWOFF")
+          return 
+        else
+        end
+        __fnl_global__mount_2dby_2dusage("GROUND_PASSENGER")
         return nil
       else
+        if __fnl_global__is_2dalternative_2dmount_2drequested() then
+          __fnl_global__mount_2dby_2dusage("GROUND_SHOWOFF")
+          return 
+        else
+        end
+        __fnl_global__mount_2dby_2dusage("GROUND")
         return nil
       end
     end
   else
-    return false
-  end
-end
-local MOUNTS_BY_USAGE = {}
-local function setupEkil()
-  if isEkil() then
-    MOUNTS_BY_USAGE = {DEFAULT = {GROUND = get(MOUNT_IDS, "Ironbound Proto-Drake"), FLYING = get(MOUNT_IDS, "Ironbound Proto-Drake"), WATER = get(MOUNT_IDS, "Ironbound Proto-Drake"), GROUND_PASSENGER = get(MOUNT_IDS, "Renewed Proto-Drake"), FLYING_PASSENGER = get(MOUNT_IDS, "Renewed Proto-Drake"), GROUND_SHOWOFF = get(MOUNT_IDS, "Ironbound Proto-Drake"), FLYING_SHOWOFF = get(MOUNT_IDS, "Ironbound Proto-Drake")}}
-    return nil
-  else
     return nil
   end
 end
-local function mountByUsage(usage)
-  if isDebugging() then
-    printDebugMapInfo()
-  else
-  end
-  local classMounts = (get(MOUNTS_BY_USAGE, getClassName()) or get(MOUNTS_BY_USAGE, "DEFAULT"))
-  return C_MountJournal.SummonByID(get(classMounts, usage))
-end
-local function mountByName(mountName)
-  return C_MountJournal.SummonByID(get(MOUNT_IDS, mountName))
-end
-local function isAlternativeMountRequested()
-  return IsModifierKeyDown()
-end
-local function mount()
-  local _12_
-  do
-    Dismount()
-    _12_ = nil
-  end
-  local _13_
-  do
-    VehicleExit()
-    _13_ = nil
-  end
-  local _14_
-  do
-    print("FLYING AREA")
-    local _15_
-    do
-      mountByUsage("FLYING_SHOWOFF")
-      _15_ = nil
-    end
-    local _16_
-    do
-      mountByUsage("FLYING_PASSENGER")
-      _16_ = nil
-    end
-    local function _17_()
-      mountByUsage("FLYING")
-      return nil
-    end
-    _14_ = cond(isAlternativeMountRequested(), _15_, IsInGroup(), _16_, "else", _17_())
-  end
-  local _18_
-  do
-    mountByUsage("FLYING")
-    _18_ = nil
-  end
-  local function _19_()
-    mountByUsage("WATER")
-    return nil
-  end
-  local _20_
-  do
-    mountByUsage("GROUND_SHOWOFF")
-    _20_ = nil
-  end
-  local function _21_()
-    mountByUsage("GROUND_PASSENGER")
-    return nil
-  end
-  local _22_
-  do
-    mountByUsage("GROUND_SHOWOFF")
-    _22_ = nil
-  end
-  local function _23_()
-    mountByUsage("GROUND")
-    return nil
-  end
-  return cond(IsMounted(), _12_, UnitUsingVehicle("player"), _13_, IsOutdoors(), cond((isActuallyFlyableArea() and not IsSubmerged()), _14_, IsSubmerged(), cond(isAlternativeMountRequested(), _18_, "else", _19_()), "else", cond(IsInGroup(), cond(isAlternativeMountRequested(), _20_, "else", _21_()), "else", cond(isAlternativeMountRequested(), _22_, "else", _23_()))))
-end
-return mount
-MOUNTS_BY_USAGE = {DEFAULT = {GROUND = MOUNT_IDS["Swift Razzashi Raptor"], FLYING = MOUNT_IDS["Ashes of Al'ar"], WATER = MOUNT_IDS["Sea Turtle"], GROUND_PASSENGER = MOUNT_IDS["Mekgineer's Chopper"], FLYING_PASSENGER = MOUNT_IDS["Algarian Stormrider"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], FLYING_SHOWOFF = MOUNT_IDS["X-45 Heartbreaker"]}, HUNTER = {GROUND = MOUNT_IDS["Swift Razzashi Raptor"], FLYING = MOUNT_IDS["Ashes of Al'ar"], WATER = MOUNT_IDS["Sea Turtle"], GROUND_PASSENGER = MOUNT_IDS["Mekgineer's Chopper"], FLYING_PASSENGER = MOUNT_IDS["Renewed Proto-Drake"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], FLYING_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"]}, PALADIN = {GROUND = MOUNT_IDS["Highlord's Golden Charger"], FLYING = MOUNT_IDS["Chaos-Forged Gryphon"], WATER = MOUNT_IDS["Sea Turtle"], GROUND_PASSENGER = MOUNT_IDS["Algarian Stormrider"], FLYING_PASSENGER = MOUNT_IDS["Algarian Stormrider"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], FLYING_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"]}, SHAMAN = {GROUND = MOUNT_IDS["Swift Razzashi Raptor"], FLYING = MOUNT_IDS["Ashes of Al'ar"], WATER = MOUNT_IDS["Sea Turtle"], GROUND_PASSENGER = MOUNT_IDS["Algarian Stormrider"], FLYING_PASSENGER = MOUNT_IDS["Algarian Stormrider"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], FLYING_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"]}, PRIEST = {GROUND = MOUNT_IDS["Swift Razzashi Raptor"], FLYING = MOUNT_IDS["Ashes of Al'ar"], WATER = MOUNT_IDS["Sea Turtle"], GROUND_PASSENGER = MOUNT_IDS["Swift Razzashi Raptor"], FLYING_PASSENGER = MOUNT_IDS["Swift Razzashi Raptor"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], FLYING_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"]}, MAGE = {GROUND = MOUNT_IDS["Celestial Steed"], FLYING = MOUNT_IDS["Celestial Steed"], WATER = MOUNT_IDS["Sea Turtle"], GROUND_PASSENGER = MOUNT_IDS["Celestial Steed"], FLYING_PASSENGER = MOUNT_IDS["Celestial Steed"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], FLYING_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"]}}
-BINDINGS = {GLOBAL = {{"ALT-CTRL-END", "command", "SLACKWISETWEAKS_RELOADUI"}, {"ALT-CTRL-`", "command", "FOCUSTARGET"}, {"ALT-`", "command", "INTERACTTARGET"}, {"W", "command", "MOVEFORWARD"}, {"A", "command", "STRAFELEFT"}, {"S", "command", "MOVEBACKWARD"}, {"D", "command", "STRAFERIGHT"}, {"ALT-A", "command", "TURNLEFT"}, {"ALT-D", "command", "TURNRIGHT"}, {"F1", "command", "ACTIONBUTTON1"}, {"F2", "command", "ACTIONBUTTON2"}, {"F3", "command", "ACTIONBUTTON3"}, {"F4", "command", "ACTIONBUTTON4"}, {"F5", "command", "ACTIONBUTTON5"}, {"F6", "command", "ACTIONBUTTON6"}, {"F7", "command", "ACTIONBUTTON7"}, {"F8", "command", "ACTIONBUTTON8"}, {"F9", "command", "ACTIONBUTTON9"}, {"F10", "command", "ACTIONBUTTON10"}, {"F11", "command", "ACTIONBUTTON11"}, {"F12", "command", "ACTIONBUTTON12"}, {"1", "command", "NONE"}, {"2", "command", "NONE"}, {"3", "command", "NONE"}, {"4", "command", "NONE"}, {"5", "command", "NONE"}, {"6", "command", "NONE"}, {"7", "command", "NONE"}, {"8", "command", "NONE"}, {"9", "command", "NONE"}, {"0", "command", "NONE"}, {"-", "command", "NONE"}, {"=", "command", "NONE"}, {"SHIFT-1", "command", "NONE"}, {"SHIFT-2", "command", "NONE"}, {"SHIFT-3", "command", "NONE"}, {"SHIFT-4", "command", "NONE"}, {"SHIFT-5", "command", "NONE"}, {"SHIFT-6", "command", "NONE"}, {"SHIFT-7", "command", "NONE"}, {"SHIFT-8", "command", "NONE"}, {"SHIFT-9", "command", "NONE"}, {"SHIFT-0", "command", "NONE"}, {"CTRL-1", "command", "NONE"}, {"CTRL-2", "command", "NONE"}, {"CTRL-3", "command", "NONE"}, {"CTRL-4", "command", "NONE"}, {"CTRL-5", "command", "NONE"}, {"CTRL-6", "command", "NONE"}, {"CTRL-7", "command", "NONE"}, {"CTRL-8", "command", "NONE"}, {"CTRL-9", "command", "NONE"}, {"CTRL-0", "command", "NONE"}, {",", "command", "NONE"}, {"ALT-CTRL-W", "command", "TOGGLEFOLLOW"}, {"E", "command", "INTERACTTARGET"}, {"SHIFT-E", "command", "INTERACTTARGET"}, {"CTRL-E", "spell", "Single-Button Assistant"}, {"ALT-E", "command", "EXTRAACTIONBUTTON1"}, {"SHIFT-R", "command", "NONE"}, {"CTRL-R", "command", "NONE"}, {"CTRL-S", "command", "NONE"}, {"ALT-CTRL-S", "spell", "Survey"}, {"H", "command", "TOGGLEGROUPFINDER"}, {"SHIFT-H", "command", "TOGGLECHARACTER4"}, {"CTRL-H", "macro", "HEARTH"}, {"ALT-CTRL-H", "macro", "HEARTH_DALARAN"}, {"ALT-H", "command", "TOGGLEUI"}, {"ALT-CTRL-L", "command", "TOGGLEACTIONBARLOCK"}, {"X", "command", "SITORSTAND"}, {"SHIFT-X", "macro", "MOUNT_BEAR"}, {"CTRL-SHIFT-X", "macro", "MOUNT_DINO"}, {"ALT-X", "command", "SITORSTAND"}, {"ALT-CTRL-X", "command", "TOGGLERUN"}, {"ALT-CTRL-SHIFT-X", "spell", "Switch Flight Style"}, {"ALT-CTRL-SHIFT-V", "spell", "Recuperate"}, {"ALT-CTRL-SHIFT-M", "spell", "Switch Flight Style"}, {"ALT-C", "command", "SLACKWISETWEAKS_BEST_MANA_POTION"}, {"ALT-V", "command", "SLACKWISETWEAKS_BEST_HEALING_POTION"}, {"ALT-CTRL-V", "command", "SLACKWISETWEAKS_BEST_BANDAGE"}, {"V", "command", "NONE"}, {"SHIFT-V", "command", "NONE"}, {"CTRL-V", "command", "NONE"}, {"B", "command", "INTERACTTARGET"}, {"SHIFT-B", "command", "OPENALLBAGS"}, {"CTRL-B", "command", "TOGGLECHARACTER0"}, {"ALT-CTRL-B", "command", "SLACKWISETWEAKS_SETBINDINGS"}, {"ALT-B", "command", "TOGGLESHEATH"}, {"CTRL-M", "command", "TOGGLEMUSIC"}, {"ALT-M", "command", "TOGGLESOUND"}, {"ALT-CTRL-M", "command", "SLACKWISETWEAKS_RESTART_SOUND"}, {"SHIFT-UP", "command", "NONE"}, {"SHIFT-DOWN", "command", "NONE"}, {"SHIFT-ENTER", "command", "REPLY"}, {"CTRL-ENTER", "command", "REPLY2"}, {"SHIFT-SPACE", "command", "SLACKWISETWEAKS_MOUNT"}, {"SHIFT-HOME", "command", "SETVIEW1"}, {"HOME", "command", "SETVIEW2"}, {"END", "command", "SETVIEW3"}, {"PRINTSCREEN", "command", "SCREENSHOT"}, {"NUMLOCK", "command", "NONE"}, {"NUMPAD0", "command", "RAIDTARGET8"}, {"NUMPAD1", "command", "RAIDTARGET7"}, {"NUMPAD2", "command", "RAIDTARGET2"}, {"NUMPAD3", "command", "RAIDTARGET4"}, {"NUMPAD4", "command", "RAIDTARGET6"}, {"NUMPAD5", "command", "RAIDTARGET5"}, {"NUMPAD6", "command", "RAIDTARGET1"}, {"NUMPAD7", "command", "RAIDTARGET3"}, {"NUMPADDECIMAL", "command", "RAIDTARGETNONE"}, {"BUTTON3", "command", "TOGGLEAUTORUN"}, {"ALT-BUTTON2", "command", "TOGGLEPINGLISTENER"}, {"SHIFT-MOUSEWHEELUP", "command", "NONE"}, {"SHIFT-MOUSEWHEELDOWN", "command", "NONE"}}, RETAIL = {HUNTER = {CLASS = {{"F8", "spell", "Call Pet 1"}, {"F9", "spell", "Call Pet 2"}, {"F10", "spell", "Call Pet 3"}, {"F11", "spell", "Call Pet 4"}, {"F12", "spell", "Call Pet 5"}, {"`", "macro", "."}, {"1", "spell", "Explosive Shot"}, {"2", "spell", "Hunter's Mark"}, {"ALT-1", "macro", "MD"}, {"3", "spell", "Multi-Shot"}, {"SHIFT-3", "spell", "Explosive Shot"}, {"4", "spell", "Arcane Shot"}, {"Q", "macro", "PetControl"}, {"CTRL-Q", "command", "BONUSACTIONBUTTON7"}, {"CTRL-SHIFT-Q", "command", "BONUSACTIONBUTTON1"}, {"ALT-CTRL-Q", "macro", "PetToggle"}, {"ALT-SHIFT-Q", "spell", "Play Dead"}, {"ALT-CTRL-SHIFT-Q", "spell", "Eyes of the Beast"}, {"SHIFT-E", "spell", "Bursting Shot"}, {"ALT-CTRL-E", "macro", "ChainEagle"}, {"T", "macro", "Traps"}, {"F", "spell", "Concussive Shot"}, {"SHIFT-F", "spell", "Counter Shot"}, {"CTRL-F", "spell", "Intimidation"}, {"ALT-F", "spell", "Tranquilizing Shot"}, {"ALT-CTRL-F", "spell", "Scare Beast"}, {"ALT-CTRL-SHIFT-F", "spell", "Fireworks"}, {"Z", "spell", "Aspect of the Cheetah"}, {"SHIFT-Z", "spell", "Camouflage"}, {"ALT-SHIFT-Z", "spell", "Aspect of the Chameleon"}, {"CTRL-Z", "spell", "Feign Death"}, {"CTRL-SHIFT-Z", "macro", "Shadowmeld"}, {"C", "spell", ""}, {"SHIFT-C", "spell", ""}, {"CTRL-C", "macro", ""}, {"B", "spell", "Fetch"}, {"V", "spell", "Exhilaration"}, {"SHIFT-V", "spell", "Survival of the Fittest"}, {"CTRL-V", "spell", "Aspect of the Turtle"}, {"CTRL-SPACE", "spell", "Disengage"}, {"BUTTON4", "macro", "TrapsCursor"}, {"BUTTON5", "macro", "PetAttackCursor"}}, MARKSMANSHIP = {{"SHIFT-2", "spell", "Aimed Shot"}, {"CTRL-3", "spell", "Barrage"}, {"ALT-3", "spell", "Salvo"}, {"SHIFT-4", "spell", "Aimed Shot"}, {"5", "spell", "Kill Shot"}, {"SHIFT-5", "spell", "Sniper Shot"}, {"R", "spell", "Steady Shot"}, {"SHIFT-R", "spell", "Rapid Fire"}, {"G", "macro", "Trueshot!"}}, SURVIVAL = {{"1", "macro", "Serpent Sting"}, {"2", "spell", "Kill Command"}, {"4", "spell", "Shrapnel Bomb"}, {"5", "spell", "Kill Shot"}, {"E", "spell", "Raptor Strike"}, {"SHIFT-E", "spell", "Butchery"}, {"R", "spell", "Harpoon"}, {"F", "spell", "Wing Clip"}}}, PALADIN = {CLASS = {{"1", "command", "ACTIONBUTTON1"}, {"2", "command", "ACTIONBUTTON2"}, {"3", "command", "ACTIONBUTTON3"}, {"4", "command", "ACTIONBUTTON4"}, {"5", "command", "ACTIONBUTTON5"}, {"6", "command", "ACTIONBUTTON6"}, {"7", "command", "ACTIONBUTTON7"}, {"8", "command", "ACTIONBUTTON8"}, {"9", "command", "ACTIONBUTTON9"}, {"10", "command", "ACTIONBUTTON10"}, {"11", "command", "ACTIONBUTTON11"}, {"12", "command", "ACTIONBUTTON12"}, {"F8", "macro", "SUMMONPET"}, {"F9", "command", "SHAPESHIFTBUTTON1"}, {"F10", "command", "SHAPESHIFTBUTTON2"}, {"F11", "command", "SHAPESHIFTBUTTON3"}, {"F12", "command", "SHAPESHIFTBUTTON4"}, {"CTRL-SPACE", "spell", "Divine Steed"}, {"BUTTON4", "macro", "MOUSE4"}, {"BUTTON5", "macro", "MOUSE5"}, {"ALT-CTRL-SHIFT-X", "spell", "Contemplation"}, {"1", "spell", "Word of Glory"}, {"CTRL-1", "spell", "Lay on Hands"}, {"2", "spell", "Flash of Light"}, {"4", "spell", "Judgment"}, {"5", "spell", "Hammer of Wrath"}, {"Q", "spell", "Shield of the Righteous"}, {"ALT-Q", "spell", "Hand of Reckoning"}, {"E", "spell", "Crusader Strike"}, {"T", "macro", "BLESST"}, {"F", "spell", "Rebuke"}, {"SHIFT-F", "spell", "Hammer of Justice"}, {"CTRL-F", "spell", "Repentance"}, {"G", "macro", "WINGS"}, {"Z", "macro", "FREEDOM"}, {"SHIFT-Z", "spell", "Will to Survive"}, {"ALT-Z", "macro", "PVP_TRINKET"}, {"ALT-CTRL-Z", "macro", "REZ"}, {"C", "spell", "Consecration"}, {"SHIFT-C", "spell", "Divine Toll"}, {"V", "macro", "VITALITY"}, {"SHIFT-V", "spell", "Divine Shield"}, {"CTRL-SHIFT-V", "macro", "BOP_SELF"}, {"CTRL-V", "macro", "LAY_SELF"}}, HOLY = {{"`", "spell", "Barrier of Faith"}, {"SHIFT-1", "spell", "Cleanse"}, {"SHIFT-2", "spell", "Holy Light"}, {"3", "spell", "Light of Dawn"}, {"R", "macro", "SHOCK"}, {"SHIFT-R", "spell", "Holy Prism"}, {"SHIFT-G", "spell", "Aura Mastery"}, {"ALT-CTRL-SHIFT-Z", "spell", "Absolution"}, {"CTRL-F", "spell", "Blinding Light"}, {"C", "spell", "Consecration"}, {"CTRL-C", "macro", "BEACON_SELF"}}, PROTECTION = {{"SHIFT-1", "spell", "Cleanse Toxins"}, {"SHIFT-Q", "spell", "Bastion of Light"}, {"3", "spell", "Avenger's Shield"}, {"R", "spell", "Holy Bulwark"}, {"T", "spell", "Hand of Reckoning"}, {"CTRL-C", "spell", "Eye of Tyr"}}, RETRIBUTION = {{"SHIFT-1", "spell", "Cleanse Toxins"}, {"3", "spell", "Wake of Ashes"}, {"Q", "macro", "Q"}, {"SHIFT-Q", "spell", "Templar's Verdict"}, {"R", "spell", "Blade of Justice"}, {"CTRL-Z", "macro", "SANC_SELF"}, {"C", "spell", "Divine Storm"}, {"CTRL-C", "macro", "RECKON_SELF"}}}, DRUID = {CLASS = {{"BUTTON4", "macro", "MOUSE4"}, {"SHIFT-SPACE", "macro", "TRAVEL"}, {"CTRL-SPACE", "spell", "Wild Charge"}, {"CTRL-SHIFT-SPACE", "command", "SLACKWISETWEAKS_MOUNT"}, {"SHIFT-H", "spell", "Dreamwalk"}, {"1", "spell", "Rejuvenation"}, {"SHIFT-1", "spell", "Rejuvenation"}, {"2", "spell", "Regrowth"}, {"SHIFT-2", "spell", "Wild Growth"}, {"3", "spell", "Sunfire"}, {"SHIFT-3", "spell", "Starfire"}, {"4", "spell", "Moonfire"}, {"SHIFT-4", "spell", "Wrath"}, {"CTRL-4", "spell", "Starsurge"}, {"5", "spell", "Starsurge"}, {"Q", "spell", "Ferocious Bite"}, {"E", "macro", "SINGLE_TARGET"}, {"R", "macro", "AOE"}, {"SHIFT-R", "spell", "Swipe"}, {"CTRL-R", "spell", ""}, {"ALT-R", "spell", "Starfire"}, {"T", "macro", "T"}, {"F", "macro", "INTERRUPT"}, {"SHIFT-F", "spell", "Entangling Roots"}, {"CTRL-F", "spell", "Incapacitating Roar"}, {"ALT-CTRL-F", "spell", "Mass Entanglement"}, {"CTRL-G", "macro", "ULT"}, {"Z", "spell", "Dash"}, {"SHIFT-Z", "spell", "Stampeding Roar"}, {"CTRL-Z", "spell", "Shadowmeld"}, {"ALT-CTRL-Z", "macro", "REZ"}, {"X", "macro", "X"}, {"C", "macro", "CAT"}, {"SHIFT-C", "spell", "Prowl"}, {"V", "macro", "BEAR"}, {"SHIFT-V", "spell", "Barkskin"}, {"CTRL-V", "spell", "Renewal"}}, BALANCE = {{"CTRL-3", "spell", "Starfall"}, {"5", "spell", "Fury of Elune"}, {"SHIFT-5", "spell", "Wild Mushroom"}, {"X", "macro", "X"}, {"G", "spell", "Celestial Alignment"}, {"SHIFT-G", "spell", "Celestial Alignment"}}, FERAL = {}, GUARDIAN = {}, RESTORATION = {{"`", "spell", "Swiftmend"}, {"SHIFT-1", "spell", "Lifebloom"}, {"G", "spell", "Grove Guardians"}, {"SHIFT-G", "spell", "Flourish"}, {"CTRL-G", "spell", "Incarnation: Tree of Life"}, {"ALT-CTRL-G", "spell", "Tranquility"}, {"ALT-CTRL-V", "spell", "Tranquility"}}}, MAGE = {CLASS = {{"E", "spell", "Frostbolt"}, {"R", "spell", "Cone of Cold"}, {"T", "spell", "Fire Blast"}, {"F", "spell", "Frost Nova"}, {"SHIFT-F", "spell", "Counterspell"}, {"CTRL-F", "spell", "Polymorph"}, {"Z", "spell", "Invisibility"}, {"X", "spell", "Slow Fall"}, {"C", "spell", "Arcane Explosion"}, {"SHIFT-V", "spell", "Ice Cold"}, {"CTRL-V", "spell", "Mass Barrier"}, {"CTRL-SPACE", "spell", "Blink"}, {"ALT-CTRL-Z", "spell", "Shadowmeld"}}, ARCANE = {}, FIRE = {}, FROST = {{"BUTTON4", "macro", "BLIZZ_CURSOR"}, {"3", "spell", "Comet Storm"}, {"4", "spell", "Ice Lance"}, {"5", "spell", "Flurry"}, {"Q", "spell", "Frozen Orb"}, {"V", "spell", "Ice Barrier"}}}, SHAMAN = {CLASS = {{"1", "spell", "Flame Shock"}, {"2", "spell", "Healing Surge"}, {"SHIFT-2", "spell", "Healing Surge"}, {"3", "spell", "Earth Shock"}, {"4", "spell", "Frost Shock"}, {"5", "spell", "Primordial Wave"}, {"Q", "macro", "CHAIN"}, {"E", "spell", "Lightning Bolt"}, {"ALT-E", "spell", "Primal Strike"}, {"R", "spell", "Lava Burst"}, {"SHIFT-R", "spell", "Lightning Shield"}, {"CTRL-R", "spell", "Water Shield"}, {"T", "spell", "Healing Stream Totem"}, {"ALT-T", "spell", "Healing Tide Totem"}, {"SHIFT-T", "spell", "Spirit Link Totem"}, {"CTRL-T", "spell", "Earthbind Totem"}, {"F", "spell", "Wind Shear"}, {"SHIFT-F", "spell", "Wind Shear"}, {"CTRL-F", "spell", "Hex"}, {"G", "spell", "Spiritwalker's Grace"}, {"SHIFT-G", "spell", "Ancestral Guidance"}, {"CTRL-G", "spell", "Ascendance"}, {"SHIFT-CTRL-G", "spell", "Heroism"}, {"Z", "spell", "Ghost Wolf"}, {"SHIFT-Z", "spell", "Wind Rush Totem"}, {"CTRL-Z", "spell", "Stoneform"}, {"C", "spell", "Thunderstorm"}, {"SHIFT-C", "macro", "RAIN_SELF"}, {"V", "spell", "Astral Shift"}, {"CTRL-C", "spell", "Stone Bulwark Totem"}, {"CTRL-SPACE", "spell", "Gust of Wind"}, {"ALT-CTRL-Z", "spell", "Ancestral Spirit"}}, ELEMENTAL = {{"BUTTON4", "macro", "MOUSE4_ELE"}}, ENHANCEMENT = {}, RESTORATION = {{"BUTTON4", "macro", "MOUSE4_RESTO"}, {"1", "spell", "Riptide"}, {"ALT-1", "spell", "Purify Spirit"}, {"SHIFT-2", "spell", "Healing Wave"}}}, PRIEST = {CLASS = {{"1", "spell", "Renew"}, {"2", "spell", "Flash Heal"}, {"3", "spell", "Divine Star"}, {"4", "spell", "Shadow Word: Pain"}, {"Q", "spell", ""}, {"SHIFT-Q", "spell", "Shadowfiend"}, {"E", "spell", "Smite"}, {"T", "spell", "Dispel Magic"}, {"SHIFT-T", "spell", "Power Word: Fortitude"}, {"CTRL-T", "spell", "Power Word: Shield"}, {"F", "macro", "SOOTHE_SELF"}, {"SHIFT-F", "spell", "Psychic Scream"}, {"CTRL-F", "spell", "Dominate Mind"}, {"ALT-CTRL-F", "spell", "Mind Vision"}, {"G", "macro", "ULT"}, {"SHIFT-G", "spell", "Power Infusion"}, {"Z", "macro", "FEATHER_SELF"}, {"SHIFT-Z", "spell", "Fade"}, {"CTRL-Z", "spell", "Shadowmeld"}, {"ALT-CTRL-Z", "macro", "REZ"}, {"X", "macro", "LEVITATE_SELF"}, {"C", "spell", "Holy Nova"}, {"CTRL-C", "spell", "Halo"}, {"V", "spell", "Desperate Prayer"}, {"SHIFT-V", "spell", "Fade"}, {"CTRL-SPACE", "spell", "Leap of Faith"}, {"BUTTON4", "macro", "MOUSE4"}}, DISCIPLINE = {}, HOLY = {{"1", "spell", "Holy Word: Serenity"}, {"SHIFT-1", "spell", "Renew"}, {"SHIFT-2", "spell", "Heal"}, {"5", "spell", "Holy Word: Chastise"}, {"R", "spell", "Holy Fire"}, {"CTRL-SHIFT-G", "spell", "Symbol of Hope"}, {"SHIFT-C", "spell", "SANCTIFY_SELF"}, {"CTRL-V", "macro", "GUARD_SELF"}}, SHADOW = {}}, WARRIOR = {CLASS = {{"`", "spell", ""}, {"1", "spell", ""}, {"2", "spell", ""}, {"4", "spell", "Heroic Throw"}, {"5", "spell", "Champion's Spear"}, {"SHIFT-2", "spell", ""}, {"Q", "spell", "Shield Slam"}, {"SHIFT-Q", "spell", "Shield Block"}, {"CTRL-Q", "spell", "Shield Charge"}, {"R", "spell", ""}, {"E", "spell", "Hamstring"}, {"T", "spell", "Taunt"}, {"F", "spell", "Pummel"}, {"G", "spell", "Avatar"}, {"SHIFT-F", "spell", "Storm Bolt"}, {"CTRL-F", "spell", ""}, {"Z", "spell", "Charge"}, {"SHIFT-Z", "spell", "Shield Charge"}, {"CTRL-Z", "spell", "Shadowmeld"}, {"ALT-CTRL-Z", "spell", "Shadowmeld"}, {"X", "spell", ""}, {"C", "spell", "Thunder Clap"}, {"SHIFT-V", "spell", ""}, {"CTRL-V", "spell", ""}, {"CTRL-SPACE", "spell", "Heroic Leap"}, {"BUTTON4", "macro", "MOUSE4"}}, ARMS = {}, FURY = {}, PROTECTION = {{"V", "spell", "Shield Wall"}}}}, CLASSIC = {DRUID = {{"1", "command", "ACTIONBUTTON1"}, {"2", "command", "ACTIONBUTTON2"}, {"3", "command", "ACTIONBUTTON3"}, {"4", "command", "ACTIONBUTTON4"}, {"5", "command", "ACTIONBUTTON5"}, {"6", "command", "ACTIONBUTTON6"}, {"7", "command", "ACTIONBUTTON7"}, {"8", "command", "ACTIONBUTTON8"}, {"9", "command", "ACTIONBUTTON9"}, {"10", "command", "ACTIONBUTTON10"}, {"11", "command", "ACTIONBUTTON11"}, {"12", "command", "ACTIONBUTTON12"}}, PALADIN = {{"1", "command", "ACTIONBUTTON1"}, {"2", "command", "ACTIONBUTTON2"}, {"3", "command", "ACTIONBUTTON3"}, {"4", "command", "ACTIONBUTTON4"}, {"5", "command", "ACTIONBUTTON5"}, {"6", "command", "ACTIONBUTTON6"}, {"7", "command", "ACTIONBUTTON7"}, {"8", "command", "ACTIONBUTTON8"}, {"9", "command", "ACTIONBUTTON9"}, {"10", "command", "ACTIONBUTTON10"}, {"11", "command", "ACTIONBUTTON11"}, {"12", "command", "ACTIONBUTTON12"}, {"E", "macro", "!ENGAGE"}, {"F9", "command", "SHAPESHIFTBUTTON1"}, {"F10", "command", "SHAPESHIFTBUTTON2"}, {"F11", "command", "SHAPESHIFTBUTTON3"}, {"F12", "command", "SHAPESHIFTBUTTON4"}, {"`", "macro", "!STOP"}, {"BUTTON4", "macro", "MOUSE4"}, {"BUTTON5", "macro", "MOUSE5"}, {"Z", "spell", "Divine Protection"}, {"ALT-Z", "spell", "Perception"}, {"4", "spell", "Judgement"}, {"5", "spell", "Hammer of Wrath"}, {"C", "spell", "Consecration"}, {"SHIFT-C", "spell", "Divine Storm"}, {"3", "spell", "Divine Storm"}, {"Q", "spell", "Holy Light"}, {"ALT-Q", "spell", "Purify"}, {"CTRL-Z", "spell", "Redemption"}, {"G", "spell", "Blessing of Protection"}, {"SHIFT-G", "spell", "Lay on Hands"}, {"F", "spell", "Rebuke"}, {"SHIFT-F", "spell", "Hammer of Justice"}, {"T", "spell", "Blessing of Might"}, {"SHIFT-T", "spell", "Blessing of Wisdom"}, {"R", "spell", "Seal of Righteousness"}, {"SHIFT-R", "spell", "Seal of the Crusader"}, {"ALT-Z", "item", "Insignia of the Alliance"}}, PRIEST = {{"1", "command", "ACTIONBUTTON1"}, {"2", "command", "ACTIONBUTTON2"}, {"3", "command", "ACTIONBUTTON3"}, {"4", "command", "ACTIONBUTTON4"}, {"5", "command", "ACTIONBUTTON5"}, {"6", "command", "ACTIONBUTTON6"}, {"7", "command", "ACTIONBUTTON7"}, {"8", "command", "ACTIONBUTTON8"}, {"9", "command", "ACTIONBUTTON9"}, {"10", "command", "ACTIONBUTTON10"}, {"11", "command", "ACTIONBUTTON11"}, {"12", "command", "ACTIONBUTTON12"}, {"`", "macro", "!STOP"}, {"1", "spell", "Renew"}, {"2", "spell", "Lesser Heal"}, {"4", "spell", "Shadow Word: Pain"}, {"Q", "spell", "Power Word: Shield"}, {"E", "macro", "!ENGAGE"}, {"T", "spell", "Power Word: Fortitude"}, {"Z", "spell", "Fade"}, {"SHIFT-Z", "spell", "Shadowmeld"}, {"CTRL-Z", "spell", "Fade"}, {"V", "macro", "SHIELD_SELF"}}}}
+return _G.mount
+MOUNTS_BY_USAGE = {DEFAULT = {FLYING = MOUNT_IDS["Ashes of Al'ar"], FLYING_PASSENGER = MOUNT_IDS["Algarian Stormrider"], FLYING_SHOWOFF = MOUNT_IDS["X-45 Heartbreaker"], GROUND = MOUNT_IDS["Swift Razzashi Raptor"], GROUND_PASSENGER = MOUNT_IDS["Mekgineer's Chopper"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], WATER = MOUNT_IDS["Sea Turtle"]}, HUNTER = {FLYING = MOUNT_IDS["Ashes of Al'ar"], FLYING_PASSENGER = MOUNT_IDS["Renewed Proto-Drake"], FLYING_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], GROUND = MOUNT_IDS["Swift Razzashi Raptor"], GROUND_PASSENGER = MOUNT_IDS["Mekgineer's Chopper"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], WATER = MOUNT_IDS["Sea Turtle"]}, MAGE = {FLYING = MOUNT_IDS["Celestial Steed"], FLYING_PASSENGER = MOUNT_IDS["Celestial Steed"], FLYING_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], GROUND = MOUNT_IDS["Celestial Steed"], GROUND_PASSENGER = MOUNT_IDS["Celestial Steed"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], WATER = MOUNT_IDS["Sea Turtle"]}, PALADIN = {FLYING = MOUNT_IDS["Chaos-Forged Gryphon"], FLYING_PASSENGER = MOUNT_IDS["Algarian Stormrider"], FLYING_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], GROUND = MOUNT_IDS["Highlord's Golden Charger"], GROUND_PASSENGER = MOUNT_IDS["Algarian Stormrider"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], WATER = MOUNT_IDS["Sea Turtle"]}, PRIEST = {FLYING = MOUNT_IDS["Ashes of Al'ar"], FLYING_PASSENGER = MOUNT_IDS["Swift Razzashi Raptor"], FLYING_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], GROUND = MOUNT_IDS["Swift Razzashi Raptor"], GROUND_PASSENGER = MOUNT_IDS["Swift Razzashi Raptor"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], WATER = MOUNT_IDS["Sea Turtle"]}, SHAMAN = {FLYING = MOUNT_IDS["Ashes of Al'ar"], FLYING_PASSENGER = MOUNT_IDS["Algarian Stormrider"], FLYING_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], GROUND = MOUNT_IDS["Swift Razzashi Raptor"], GROUND_PASSENGER = MOUNT_IDS["Algarian Stormrider"], GROUND_SHOWOFF = MOUNT_IDS["Swift Razzashi Raptor"], WATER = MOUNT_IDS["Sea Turtle"]}}
+BINDINGS = {CLASSIC = {DRUID = {{"1", "command", "ACTIONBUTTON1"}, {"2", "command", "ACTIONBUTTON2"}, {"3", "command", "ACTIONBUTTON3"}, {"4", "command", "ACTIONBUTTON4"}, {"5", "command", "ACTIONBUTTON5"}, {"6", "command", "ACTIONBUTTON6"}, {"7", "command", "ACTIONBUTTON7"}, {"8", "command", "ACTIONBUTTON8"}, {"9", "command", "ACTIONBUTTON9"}, {"10", "command", "ACTIONBUTTON10"}, {"11", "command", "ACTIONBUTTON11"}, {"12", "command", "ACTIONBUTTON12"}}, PALADIN = {{"1", "command", "ACTIONBUTTON1"}, {"2", "command", "ACTIONBUTTON2"}, {"3", "command", "ACTIONBUTTON3"}, {"4", "command", "ACTIONBUTTON4"}, {"5", "command", "ACTIONBUTTON5"}, {"6", "command", "ACTIONBUTTON6"}, {"7", "command", "ACTIONBUTTON7"}, {"8", "command", "ACTIONBUTTON8"}, {"9", "command", "ACTIONBUTTON9"}, {"10", "command", "ACTIONBUTTON10"}, {"11", "command", "ACTIONBUTTON11"}, {"12", "command", "ACTIONBUTTON12"}, {"E", "macro", "!ENGAGE"}, {"F9", "command", "SHAPESHIFTBUTTON1"}, {"F10", "command", "SHAPESHIFTBUTTON2"}, {"F11", "command", "SHAPESHIFTBUTTON3"}, {"F12", "command", "SHAPESHIFTBUTTON4"}, {"`", "macro", "!STOP"}, {"BUTTON4", "macro", "MOUSE4"}, {"BUTTON5", "macro", "MOUSE5"}, {"Z", "spell", "Divine Protection"}, {"ALT-Z", "spell", "Perception"}, {"4", "spell", "Judgement"}, {"5", "spell", "Hammer of Wrath"}, {"C", "spell", "Consecration"}, {"SHIFT-C", "spell", "Divine Storm"}, {"3", "spell", "Divine Storm"}, {"Q", "spell", "Holy Light"}, {"ALT-Q", "spell", "Purify"}, {"CTRL-Z", "spell", "Redemption"}, {"G", "spell", "Blessing of Protection"}, {"SHIFT-G", "spell", "Lay on Hands"}, {"F", "spell", "Rebuke"}, {"SHIFT-F", "spell", "Hammer of Justice"}, {"T", "spell", "Blessing of Might"}, {"SHIFT-T", "spell", "Blessing of Wisdom"}, {"R", "spell", "Seal of Righteousness"}, {"SHIFT-R", "spell", "Seal of the Crusader"}, {"ALT-Z", "item", "Insignia of the Alliance"}}, PRIEST = {{"1", "command", "ACTIONBUTTON1"}, {"2", "command", "ACTIONBUTTON2"}, {"3", "command", "ACTIONBUTTON3"}, {"4", "command", "ACTIONBUTTON4"}, {"5", "command", "ACTIONBUTTON5"}, {"6", "command", "ACTIONBUTTON6"}, {"7", "command", "ACTIONBUTTON7"}, {"8", "command", "ACTIONBUTTON8"}, {"9", "command", "ACTIONBUTTON9"}, {"10", "command", "ACTIONBUTTON10"}, {"11", "command", "ACTIONBUTTON11"}, {"12", "command", "ACTIONBUTTON12"}, {"`", "macro", "!STOP"}, {"1", "spell", "Renew"}, {"2", "spell", "Lesser Heal"}, {"4", "spell", "Shadow Word: Pain"}, {"Q", "spell", "Power Word: Shield"}, {"E", "macro", "!ENGAGE"}, {"T", "spell", "Power Word: Fortitude"}, {"Z", "spell", "Fade"}, {"SHIFT-Z", "spell", "Shadowmeld"}, {"CTRL-Z", "spell", "Fade"}, {"V", "macro", "SHIELD_SELF"}}}, GLOBAL = {{"ALT-CTRL-END", "command", "SLACKWISETWEAKS_RELOADUI"}, {"ALT-CTRL-`", "command", "FOCUSTARGET"}, {"ALT-`", "command", "INTERACTTARGET"}, {"W", "command", "MOVEFORWARD"}, {"A", "command", "STRAFELEFT"}, {"S", "command", "MOVEBACKWARD"}, {"D", "command", "STRAFERIGHT"}, {"ALT-A", "command", "TURNLEFT"}, {"ALT-D", "command", "TURNRIGHT"}, {"F1", "command", "ACTIONBUTTON1"}, {"F2", "command", "ACTIONBUTTON2"}, {"F3", "command", "ACTIONBUTTON3"}, {"F4", "command", "ACTIONBUTTON4"}, {"F5", "command", "ACTIONBUTTON5"}, {"F6", "command", "ACTIONBUTTON6"}, {"F7", "command", "ACTIONBUTTON7"}, {"F8", "command", "ACTIONBUTTON8"}, {"F9", "command", "ACTIONBUTTON9"}, {"F10", "command", "ACTIONBUTTON10"}, {"F11", "command", "ACTIONBUTTON11"}, {"F12", "command", "ACTIONBUTTON12"}, {"1", "command", "NONE"}, {"2", "command", "NONE"}, {"3", "command", "NONE"}, {"4", "command", "NONE"}, {"5", "command", "NONE"}, {"6", "command", "NONE"}, {"7", "command", "NONE"}, {"8", "command", "NONE"}, {"9", "command", "NONE"}, {"0", "command", "NONE"}, {"-", "command", "NONE"}, {"=", "command", "NONE"}, {"SHIFT-1", "command", "NONE"}, {"SHIFT-2", "command", "NONE"}, {"SHIFT-3", "command", "NONE"}, {"SHIFT-4", "command", "NONE"}, {"SHIFT-5", "command", "NONE"}, {"SHIFT-6", "command", "NONE"}, {"SHIFT-7", "command", "NONE"}, {"SHIFT-8", "command", "NONE"}, {"SHIFT-9", "command", "NONE"}, {"SHIFT-0", "command", "NONE"}, {"CTRL-1", "command", "NONE"}, {"CTRL-2", "command", "NONE"}, {"CTRL-3", "command", "NONE"}, {"CTRL-4", "command", "NONE"}, {"CTRL-5", "command", "NONE"}, {"CTRL-6", "command", "NONE"}, {"CTRL-7", "command", "NONE"}, {"CTRL-8", "command", "NONE"}, {"CTRL-9", "command", "NONE"}, {"CTRL-0", "command", "NONE"}, {",", "command", "NONE"}, {"ALT-CTRL-W", "command", "TOGGLEFOLLOW"}, {"E", "command", "INTERACTTARGET"}, {"SHIFT-E", "command", "INTERACTTARGET"}, {"CTRL-E", "spell", "Single-Button Assistant"}, {"ALT-E", "command", "EXTRAACTIONBUTTON1"}, {"SHIFT-R", "command", "NONE"}, {"CTRL-R", "command", "NONE"}, {"CTRL-S", "command", "NONE"}, {"ALT-CTRL-S", "spell", "Survey"}, {"H", "command", "TOGGLEGROUPFINDER"}, {"SHIFT-H", "command", "TOGGLECHARACTER4"}, {"CTRL-H", "macro", "HEARTH"}, {"ALT-CTRL-H", "macro", "HEARTH_DALARAN"}, {"ALT-H", "command", "TOGGLEUI"}, {"ALT-CTRL-L", "command", "TOGGLEACTIONBARLOCK"}, {"X", "command", "SITORSTAND"}, {"SHIFT-X", "macro", "MOUNT_BEAR"}, {"CTRL-SHIFT-X", "macro", "MOUNT_DINO"}, {"ALT-X", "command", "SITORSTAND"}, {"ALT-CTRL-X", "command", "TOGGLERUN"}, {"ALT-CTRL-SHIFT-X", "spell", "Switch Flight Style"}, {"ALT-CTRL-SHIFT-V", "spell", "Recuperate"}, {"ALT-CTRL-SHIFT-M", "spell", "Switch Flight Style"}, {"ALT-C", "command", "SLACKWISETWEAKS_BEST_MANA_POTION"}, {"ALT-V", "command", "SLACKWISETWEAKS_BEST_HEALING_POTION"}, {"ALT-CTRL-V", "command", "SLACKWISETWEAKS_BEST_BANDAGE"}, {"V", "command", "NONE"}, {"SHIFT-V", "command", "NONE"}, {"CTRL-V", "command", "NONE"}, {"B", "command", "INTERACTTARGET"}, {"SHIFT-B", "command", "OPENALLBAGS"}, {"CTRL-B", "command", "TOGGLECHARACTER0"}, {"ALT-CTRL-B", "command", "SLACKWISETWEAKS_SETBINDINGS"}, {"ALT-B", "command", "TOGGLESHEATH"}, {"CTRL-M", "command", "TOGGLEMUSIC"}, {"ALT-M", "command", "TOGGLESOUND"}, {"ALT-CTRL-M", "command", "SLACKWISETWEAKS_RESTART_SOUND"}, {"SHIFT-UP", "command", "NONE"}, {"SHIFT-DOWN", "command", "NONE"}, {"SHIFT-ENTER", "command", "REPLY"}, {"CTRL-ENTER", "command", "REPLY2"}, {"SHIFT-SPACE", "command", "SLACKWISETWEAKS_MOUNT"}, {"SHIFT-HOME", "command", "SETVIEW1"}, {"HOME", "command", "SETVIEW2"}, {"END", "command", "SETVIEW3"}, {"PRINTSCREEN", "command", "SCREENSHOT"}, {"NUMLOCK", "command", "NONE"}, {"NUMPAD0", "command", "RAIDTARGET8"}, {"NUMPAD1", "command", "RAIDTARGET7"}, {"NUMPAD2", "command", "RAIDTARGET2"}, {"NUMPAD3", "command", "RAIDTARGET4"}, {"NUMPAD4", "command", "RAIDTARGET6"}, {"NUMPAD5", "command", "RAIDTARGET5"}, {"NUMPAD6", "command", "RAIDTARGET1"}, {"NUMPAD7", "command", "RAIDTARGET3"}, {"NUMPADDECIMAL", "command", "RAIDTARGETNONE"}, {"BUTTON3", "command", "TOGGLEAUTORUN"}, {"ALT-BUTTON2", "command", "TOGGLEPINGLISTENER"}, {"SHIFT-MOUSEWHEELUP", "command", "NONE"}, {"SHIFT-MOUSEWHEELDOWN", "command", "NONE"}}, RETAIL = {DRUID = {BALANCE = {{"CTRL-3", "spell", "Starfall"}, {"5", "spell", "Fury of Elune"}, {"SHIFT-5", "spell", "Wild Mushroom"}, {"X", "macro", "X"}, {"G", "spell", "Celestial Alignment"}, {"SHIFT-G", "spell", "Celestial Alignment"}}, CLASS = {{"BUTTON4", "macro", "MOUSE4"}, {"SHIFT-SPACE", "macro", "TRAVEL"}, {"CTRL-SPACE", "spell", "Wild Charge"}, {"CTRL-SHIFT-SPACE", "command", "SLACKWISETWEAKS_MOUNT"}, {"SHIFT-H", "spell", "Dreamwalk"}, {"1", "spell", "Rejuvenation"}, {"SHIFT-1", "spell", "Rejuvenation"}, {"2", "spell", "Regrowth"}, {"SHIFT-2", "spell", "Wild Growth"}, {"3", "spell", "Sunfire"}, {"SHIFT-3", "spell", "Starfire"}, {"4", "spell", "Moonfire"}, {"SHIFT-4", "spell", "Wrath"}, {"CTRL-4", "spell", "Starsurge"}, {"5", "spell", "Starsurge"}, {"Q", "spell", "Ferocious Bite"}, {"E", "macro", "SINGLE_TARGET"}, {"R", "macro", "AOE"}, {"SHIFT-R", "spell", "Swipe"}, {"CTRL-R", "spell", ""}, {"ALT-R", "spell", "Starfire"}, {"T", "macro", "T"}, {"F", "macro", "INTERRUPT"}, {"SHIFT-F", "spell", "Entangling Roots"}, {"CTRL-F", "spell", "Incapacitating Roar"}, {"ALT-CTRL-F", "spell", "Mass Entanglement"}, {"CTRL-G", "macro", "ULT"}, {"Z", "spell", "Dash"}, {"SHIFT-Z", "spell", "Stampeding Roar"}, {"CTRL-Z", "spell", "Shadowmeld"}, {"ALT-CTRL-Z", "macro", "REZ"}, {"X", "macro", "X"}, {"C", "macro", "CAT"}, {"SHIFT-C", "spell", "Prowl"}, {"V", "macro", "BEAR"}, {"SHIFT-V", "spell", "Barkskin"}, {"CTRL-V", "spell", "Renewal"}}, FERAL = {}, GUARDIAN = {}, RESTORATION = {{"`", "spell", "Swiftmend"}, {"SHIFT-1", "spell", "Lifebloom"}, {"G", "spell", "Grove Guardians"}, {"SHIFT-G", "spell", "Flourish"}, {"CTRL-G", "spell", "Incarnation: Tree of Life"}, {"ALT-CTRL-G", "spell", "Tranquility"}, {"ALT-CTRL-V", "spell", "Tranquility"}}}, HUNTER = {CLASS = {{"F8", "spell", "Call Pet 1"}, {"F9", "spell", "Call Pet 2"}, {"F10", "spell", "Call Pet 3"}, {"F11", "spell", "Call Pet 4"}, {"F12", "spell", "Call Pet 5"}, {"`", "macro", "."}, {"1", "spell", "Explosive Shot"}, {"2", "spell", "Hunter's Mark"}, {"ALT-1", "macro", "MD"}, {"3", "spell", "Multi-Shot"}, {"SHIFT-3", "spell", "Explosive Shot"}, {"4", "spell", "Arcane Shot"}, {"Q", "macro", "PetControl"}, {"CTRL-Q", "command", "BONUSACTIONBUTTON7"}, {"CTRL-SHIFT-Q", "command", "BONUSACTIONBUTTON1"}, {"ALT-CTRL-Q", "macro", "PetToggle"}, {"ALT-SHIFT-Q", "spell", "Play Dead"}, {"ALT-CTRL-SHIFT-Q", "spell", "Eyes of the Beast"}, {"SHIFT-E", "spell", "Bursting Shot"}, {"ALT-CTRL-E", "macro", "ChainEagle"}, {"T", "macro", "Traps"}, {"F", "spell", "Concussive Shot"}, {"SHIFT-F", "spell", "Counter Shot"}, {"CTRL-F", "spell", "Intimidation"}, {"ALT-F", "spell", "Tranquilizing Shot"}, {"ALT-CTRL-F", "spell", "Scare Beast"}, {"ALT-CTRL-SHIFT-F", "spell", "Fireworks"}, {"Z", "spell", "Aspect of the Cheetah"}, {"SHIFT-Z", "spell", "Camouflage"}, {"ALT-SHIFT-Z", "spell", "Aspect of the Chameleon"}, {"CTRL-Z", "spell", "Feign Death"}, {"CTRL-SHIFT-Z", "macro", "Shadowmeld"}, {"C", "spell", ""}, {"SHIFT-C", "spell", ""}, {"CTRL-C", "macro", ""}, {"B", "spell", "Fetch"}, {"V", "spell", "Exhilaration"}, {"SHIFT-V", "spell", "Survival of the Fittest"}, {"CTRL-V", "spell", "Aspect of the Turtle"}, {"CTRL-SPACE", "spell", "Disengage"}, {"BUTTON4", "macro", "TrapsCursor"}, {"BUTTON5", "macro", "PetAttackCursor"}}, MARKSMANSHIP = {{"SHIFT-2", "spell", "Aimed Shot"}, {"CTRL-3", "spell", "Barrage"}, {"ALT-3", "spell", "Salvo"}, {"SHIFT-4", "spell", "Aimed Shot"}, {"5", "spell", "Kill Shot"}, {"SHIFT-5", "spell", "Sniper Shot"}, {"R", "spell", "Steady Shot"}, {"SHIFT-R", "spell", "Rapid Fire"}, {"G", "macro", "Trueshot!"}}, SURVIVAL = {{"1", "macro", "Serpent Sting"}, {"2", "spell", "Kill Command"}, {"4", "spell", "Shrapnel Bomb"}, {"5", "spell", "Kill Shot"}, {"E", "spell", "Raptor Strike"}, {"SHIFT-E", "spell", "Butchery"}, {"R", "spell", "Harpoon"}, {"F", "spell", "Wing Clip"}}}, MAGE = {ARCANE = {}, CLASS = {{"E", "spell", "Frostbolt"}, {"R", "spell", "Cone of Cold"}, {"T", "spell", "Fire Blast"}, {"F", "spell", "Frost Nova"}, {"SHIFT-F", "spell", "Counterspell"}, {"CTRL-F", "spell", "Polymorph"}, {"Z", "spell", "Invisibility"}, {"X", "spell", "Slow Fall"}, {"C", "spell", "Arcane Explosion"}, {"SHIFT-V", "spell", "Ice Cold"}, {"CTRL-V", "spell", "Mass Barrier"}, {"CTRL-SPACE", "spell", "Blink"}, {"ALT-CTRL-Z", "spell", "Shadowmeld"}}, FIRE = {}, FROST = {{"BUTTON4", "macro", "BLIZZ_CURSOR"}, {"3", "spell", "Comet Storm"}, {"4", "spell", "Ice Lance"}, {"5", "spell", "Flurry"}, {"Q", "spell", "Frozen Orb"}, {"V", "spell", "Ice Barrier"}}}, PALADIN = {CLASS = {{"1", "command", "ACTIONBUTTON1"}, {"2", "command", "ACTIONBUTTON2"}, {"3", "command", "ACTIONBUTTON3"}, {"4", "command", "ACTIONBUTTON4"}, {"5", "command", "ACTIONBUTTON5"}, {"6", "command", "ACTIONBUTTON6"}, {"7", "command", "ACTIONBUTTON7"}, {"8", "command", "ACTIONBUTTON8"}, {"9", "command", "ACTIONBUTTON9"}, {"10", "command", "ACTIONBUTTON10"}, {"11", "command", "ACTIONBUTTON11"}, {"12", "command", "ACTIONBUTTON12"}, {"F8", "macro", "SUMMONPET"}, {"F9", "command", "SHAPESHIFTBUTTON1"}, {"F10", "command", "SHAPESHIFTBUTTON2"}, {"F11", "command", "SHAPESHIFTBUTTON3"}, {"F12", "command", "SHAPESHIFTBUTTON4"}, {"CTRL-SPACE", "spell", "Divine Steed"}, {"BUTTON4", "macro", "MOUSE4"}, {"BUTTON5", "macro", "MOUSE5"}, {"ALT-CTRL-SHIFT-X", "spell", "Contemplation"}, {"1", "spell", "Word of Glory"}, {"CTRL-1", "spell", "Lay on Hands"}, {"2", "spell", "Flash of Light"}, {"4", "spell", "Judgment"}, {"5", "spell", "Hammer of Wrath"}, {"Q", "spell", "Shield of the Righteous"}, {"ALT-Q", "spell", "Hand of Reckoning"}, {"E", "spell", "Crusader Strike"}, {"T", "macro", "BLESST"}, {"F", "spell", "Rebuke"}, {"SHIFT-F", "spell", "Hammer of Justice"}, {"CTRL-F", "spell", "Repentance"}, {"G", "macro", "WINGS"}, {"Z", "macro", "FREEDOM"}, {"SHIFT-Z", "spell", "Will to Survive"}, {"ALT-Z", "macro", "PVP_TRINKET"}, {"ALT-CTRL-Z", "macro", "REZ"}, {"C", "spell", "Consecration"}, {"SHIFT-C", "spell", "Divine Toll"}, {"V", "macro", "VITALITY"}, {"SHIFT-V", "spell", "Divine Shield"}, {"CTRL-SHIFT-V", "macro", "BOP_SELF"}, {"CTRL-V", "macro", "LAY_SELF"}}, HOLY = {{"`", "spell", "Barrier of Faith"}, {"SHIFT-1", "spell", "Cleanse"}, {"SHIFT-2", "spell", "Holy Light"}, {"3", "spell", "Light of Dawn"}, {"R", "macro", "SHOCK"}, {"SHIFT-R", "spell", "Holy Prism"}, {"SHIFT-G", "spell", "Aura Mastery"}, {"ALT-CTRL-SHIFT-Z", "spell", "Absolution"}, {"CTRL-F", "spell", "Blinding Light"}, {"C", "spell", "Consecration"}, {"CTRL-C", "macro", "BEACON_SELF"}}, PROTECTION = {{"SHIFT-1", "spell", "Cleanse Toxins"}, {"SHIFT-Q", "spell", "Bastion of Light"}, {"3", "spell", "Avenger's Shield"}, {"R", "spell", "Holy Bulwark"}, {"T", "spell", "Hand of Reckoning"}, {"CTRL-C", "spell", "Eye of Tyr"}}, RETRIBUTION = {{"SHIFT-1", "spell", "Cleanse Toxins"}, {"3", "spell", "Wake of Ashes"}, {"Q", "macro", "Q"}, {"SHIFT-Q", "spell", "Templar's Verdict"}, {"R", "spell", "Blade of Justice"}, {"CTRL-Z", "macro", "SANC_SELF"}, {"C", "spell", "Divine Storm"}, {"CTRL-C", "macro", "RECKON_SELF"}}}, PRIEST = {CLASS = {{"1", "spell", "Renew"}, {"2", "spell", "Flash Heal"}, {"3", "spell", "Divine Star"}, {"4", "spell", "Shadow Word: Pain"}, {"Q", "spell", ""}, {"SHIFT-Q", "spell", "Shadowfiend"}, {"E", "spell", "Smite"}, {"T", "spell", "Dispel Magic"}, {"SHIFT-T", "spell", "Power Word: Fortitude"}, {"CTRL-T", "spell", "Power Word: Shield"}, {"F", "macro", "SOOTHE_SELF"}, {"SHIFT-F", "spell", "Psychic Scream"}, {"CTRL-F", "spell", "Dominate Mind"}, {"ALT-CTRL-F", "spell", "Mind Vision"}, {"G", "macro", "ULT"}, {"SHIFT-G", "spell", "Power Infusion"}, {"Z", "macro", "FEATHER_SELF"}, {"SHIFT-Z", "spell", "Fade"}, {"CTRL-Z", "spell", "Shadowmeld"}, {"ALT-CTRL-Z", "macro", "REZ"}, {"X", "macro", "LEVITATE_SELF"}, {"C", "spell", "Holy Nova"}, {"CTRL-C", "spell", "Halo"}, {"V", "spell", "Desperate Prayer"}, {"SHIFT-V", "spell", "Fade"}, {"CTRL-SPACE", "spell", "Leap of Faith"}, {"BUTTON4", "macro", "MOUSE4"}}, DISCIPLINE = {}, HOLY = {{"1", "spell", "Holy Word: Serenity"}, {"SHIFT-1", "spell", "Renew"}, {"SHIFT-2", "spell", "Heal"}, {"5", "spell", "Holy Word: Chastise"}, {"R", "spell", "Holy Fire"}, {"CTRL-SHIFT-G", "spell", "Symbol of Hope"}, {"SHIFT-C", "spell", "SANCTIFY_SELF"}, {"CTRL-V", "macro", "GUARD_SELF"}}, SHADOW = {}}, SHAMAN = {CLASS = {{"1", "spell", "Flame Shock"}, {"2", "spell", "Healing Surge"}, {"SHIFT-2", "spell", "Healing Surge"}, {"3", "spell", "Earth Shock"}, {"4", "spell", "Frost Shock"}, {"5", "spell", "Primordial Wave"}, {"Q", "macro", "CHAIN"}, {"E", "spell", "Lightning Bolt"}, {"ALT-E", "spell", "Primal Strike"}, {"R", "spell", "Lava Burst"}, {"SHIFT-R", "spell", "Lightning Shield"}, {"CTRL-R", "spell", "Water Shield"}, {"T", "spell", "Healing Stream Totem"}, {"ALT-T", "spell", "Healing Tide Totem"}, {"SHIFT-T", "spell", "Spirit Link Totem"}, {"CTRL-T", "spell", "Earthbind Totem"}, {"F", "spell", "Wind Shear"}, {"SHIFT-F", "spell", "Wind Shear"}, {"CTRL-F", "spell", "Hex"}, {"G", "spell", "Spiritwalker's Grace"}, {"SHIFT-G", "spell", "Ancestral Guidance"}, {"CTRL-G", "spell", "Ascendance"}, {"SHIFT-CTRL-G", "spell", "Heroism"}, {"Z", "spell", "Ghost Wolf"}, {"SHIFT-Z", "spell", "Wind Rush Totem"}, {"CTRL-Z", "spell", "Stoneform"}, {"C", "spell", "Thunderstorm"}, {"SHIFT-C", "macro", "RAIN_SELF"}, {"V", "spell", "Astral Shift"}, {"CTRL-C", "spell", "Stone Bulwark Totem"}, {"CTRL-SPACE", "spell", "Gust of Wind"}, {"ALT-CTRL-Z", "spell", "Ancestral Spirit"}}, ELEMENTAL = {{"BUTTON4", "macro", "MOUSE4_ELE"}}, ENHANCEMENT = {}, RESTORATION = {{"BUTTON4", "macro", "MOUSE4_RESTO"}, {"1", "spell", "Riptide"}, {"ALT-1", "spell", "Purify Spirit"}, {"SHIFT-2", "spell", "Healing Wave"}}}, WARRIOR = {ARMS = {}, CLASS = {{"`", "spell", ""}, {"1", "spell", ""}, {"2", "spell", ""}, {"4", "spell", "Heroic Throw"}, {"5", "spell", "Champion's Spear"}, {"SHIFT-2", "spell", ""}, {"Q", "spell", "Shield Slam"}, {"SHIFT-Q", "spell", "Shield Block"}, {"CTRL-Q", "spell", "Shield Charge"}, {"R", "spell", ""}, {"E", "spell", "Hamstring"}, {"R", "spell", "Whirlwind"}, {"T", "spell", "Taunt"}, {"F", "spell", "Pummel"}, {"G", "spell", "Avatar"}, {"SHIFT-F", "spell", "Storm Bolt"}, {"CTRL-F", "spell", ""}, {"Z", "spell", "Charge"}, {"SHIFT-Z", "spell", "Shield Charge"}, {"CTRL-Z", "spell", "Shadowmeld"}, {"ALT-CTRL-Z", "spell", "Shadowmeld"}, {"X", "spell", ""}, {"C", "spell", "Thunder Clap"}, {"SHIFT-V", "spell", ""}, {"CTRL-V", "spell", ""}, {"CTRL-SPACE", "spell", "Heroic Leap"}, {"BUTTON4", "macro", "MOUSE4"}}, FURY = {}, PROTECTION = {{"V", "spell", "Shield Wall"}}}}}
 return nil

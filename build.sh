@@ -1,7 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 
-compiler="fennel-1.6.0.exe"
+compiler="bin/fennel-1.6.0.exe"
 
 output_file="SlackwiseTweaks.lua"
 

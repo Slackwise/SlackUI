@@ -243,7 +243,7 @@ end
 local function getKeyByValue(targetTable, targetValue)
   local function _17_()
     if (value == targetValue) then
-      return __fnl_global__return(key)
+      return key
     else
       return nil
     end
@@ -259,7 +259,7 @@ end
 local function findFirstElement(targetTable, kvPredicate)
   local function _18_()
     if kvPredicate(key, value) then
-      return __fnl_global__return({key, value})
+      return {key, value}
     else
       return nil
     end
@@ -435,7 +435,6 @@ end
 local DRUID_RARE_MOBS = {"Keen-eyed Cian", "Matriarch Keevah", "Moragh the Slothful", "Mosa Umbramane", "Ristar the Rabid", "Talthonei Ashwhisper"}
 local function findDruidRareMobs(vignetteGUID)
   if not (getClassName() == "DRUID") then
-    __fnl_global__return(nil)
   else
   end
   log(("VIGNETTE ID: " .. vignetteGUID))
@@ -500,7 +499,6 @@ end
 local function bindBestUseItems()
   if InCombatLockdown() then
     runAfterCombat(bindBestUseItems)
-    __fnl_global__return()
   else
   end
   ClearOverrideBindings(Self.itemBindingFrame)
@@ -555,12 +553,10 @@ end
 local function setBindings()
   if not isTester() then
     print("SlackwiseTweaks Bindings: Work in progress. Cannot bind currently.")
-    __fnl_global__return()
   else
   end
   if InCombatLockdown() then
     runAfterCombat(setBindings)
-    __fnl_global__return()
   else
   end
   LoadBindings(BINDING_TYPE.DEFAULT_BINDINGS)
@@ -729,7 +725,6 @@ local function isDragonriding()
         for mountId in dragonridingSpellIds do
           local spellId = select(2, C_MountJournal.GetMountInfoByID(mountId))
           if C_UnitAuras.GetPlayerAuraBySpellID(spellId) then
-            __fnl_global__return(true)
           else
           end
         end

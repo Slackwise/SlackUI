@@ -35,7 +35,7 @@
             (each [mountId dragonridingSpellIds]
               (let [spellId (select 2 (C_MountJournal.GetMountInfoByID mountId))]
                 (when (C_UnitAuras.GetPlayerAuraBySpellID spellId)
-                  (return true)))))))
+                  true))))))
       false)))
 
 (var MOUNTS_BY_USAGE {})

@@ -106,7 +106,7 @@
 (fn getKeyByValue [targetTable targetValue]
   (each-pair [key value targetTable]
     (when (= value targetValue)
-      (return key)))
+      key))
   nil)
 
 (fn keys [targetTable]
@@ -118,7 +118,7 @@
 (fn findFirstElement [targetTable kvPredicate]
   (each-pair [key value targetTable]
     (when (kvPredicate key value)
-      (return [key value])))
+      [key value]))
   [nil nil])
 
 (fn findElements [targetTable kvPredicate]

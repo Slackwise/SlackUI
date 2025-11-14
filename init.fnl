@@ -88,11 +88,3 @@
 
 (fn isInitialized []
   (not (not (get Self "configDialog"))))
-
-;; Load dependencies in order
-(dofile "static-data.fnl")
-(dofile "core.fnl")
-(dofile "bindings.fnl")
-(dofile "options.fnl")
-(dofile "mount.fnl")
-(dofile "slackwise.fnl")

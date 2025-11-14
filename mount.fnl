@@ -1,12 +1,10 @@
-(set _G.SlackwiseTweaks)
-
 (fn handleDragonriding []
   (when (isTester)
     (if (isDragonriding)
       (bindDragonriding)
       (unbindDragonriding))))
 
-(local isDragonridingBound false)
+(var isDragonridingBound false)
 
 (fn bindDragonriding []
   (when (and (not (InCombatLockdown)) (not isDragonridingBound))
@@ -40,7 +38,7 @@
                   (return true)))))))
       false)))
 
-(local MOUNTS_BY_USAGE {})
+(var MOUNTS_BY_USAGE {})
 
 (fn setupEkil []
   (when (isEkil)

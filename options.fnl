@@ -1,6 +1,3 @@
-(local addonName _ ...)
-(set _G.SlackwiseTweaks)
-
 (local options {
   :type "group"
   :args {

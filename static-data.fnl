@@ -1,5 +1,3 @@
-(set _G.SlackwiseTweaks)
-
 ;; MOUNT_IDS table
 (local MOUNT_IDS {
   "Charger" 84

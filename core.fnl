@@ -1,9 +1,5 @@
-(setfenv 1 (_G.SlackwiseTweaks))
-
-;; General API Documentation (see comments in original Lua)
-
 ;; Event Handlers
-(fn Self:OnEnable []
+(fn OnEnable [self]
   (setCVars)
   (. self :RegisterEvent "MERCHANT_SHOW")
   (. self :RegisterEvent "PLAYER_ENTERING_WORLD")
@@ -16,33 +12,33 @@
   ;; (. self :RegisterEvent "VIGNETTE_MINIMAP_UPDATED")
 )
 
-(fn Self:OnDisable [])
+(fn OnDisable [self])
 
-(fn Self:BAG_UPDATE_DELAYED []
+(fn BAG_UPDATE_DELAYED [self]
   (bindBestUseItems))
 
-(fn Self:PLAYER_ENTERING_WORLD [eventName isLogin isReload]
+(fn PLAYER_ENTERING_WORLD [self eventName isLogin isReload]
   (setupEkil)
   (handleDragonriding))
 
-(fn Self:MERCHANT_SHOW [eventName]
+(fn MERCHANT_SHOW [self eventName]
   (repairAllItems)
   (sellGreyItems))
 
-(fn Self:PLAYER_REGEN_ENABLED [eventName]
+(fn PLAYER_REGEN_ENABLED [self eventName]
   (handleDragonriding)
   (runAfterCombatActions))
 
-(fn Self:PLAYER_REGEN_DISABLED [eventName])
+(fn PLAYER_REGEN_DISABLED [self eventName])
 
-(fn Self:ACTIVE_TALENT_GROUP_CHANGED [currentSpecID previousSpecID]
+(fn ACTIVE_TALENT_GROUP_CHANGED [self currentSpecID previousSpecID]
   (setBindings))
 
-(fn Self:UNIT_AURA [eventName unitTarget updateInfo]
+(fn UNIT_AURA [self eventName unitTarget updateInfo]
   (when (= unitTarget "player")
     (handleDragonriding)))
 
-(local afterCombatActions [])
+(var afterCombatActions [])
 (fn runAfterCombat [f]
   (table.insert afterCombatActions f))
 
@@ -129,7 +125,7 @@
   (let [found {}]
     (each-pair [key value targetTable]
       (when (kvPredicate key value)
-        (set found[key] value)))
+        (set (. found key) value)))
     found))
 
 (fn findItemsByItemIDs [itemIDs]
@@ -158,9 +154,9 @@
   (let [grouped {}]
     (each-pair [key value array]
       (let [[groupingKey newValue] (groupingFunction value)]
-        (if grouped[value]
-          (table.insert grouped[groupingKey] newValue)
-          (set grouped[groupingKey] [newValue]))))
+        (if (. grouped value)
+          (table.insert (. grouped groupingKey) newValue)
+          (set (. grouped groupingKey) [newValue]))))
     grouped))
 
 (fn findLargestIndex [array]
@@ -261,7 +257,7 @@
         [currentHour currentMinute] (GetGameTime)
         lastTimeFound (get foundDruidRares name)]
     (when (or (not lastTimeFound) (isTimeWithin lastTimeFound (* 5 60) (GetServerTime)))
-      (set foundDruidRares[name] [currentUnixTimestamp currentHour currentMinute]))))
+      (set (. foundDruidRares name) [currentUnixTimestamp currentHour currentMinute]))))
 
 (fn announceFoundDruidRare [name]
   (log (.. "Found druid rare: " name))

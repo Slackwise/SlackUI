@@ -1,8 +1,8 @@
-(local Self (. LibStub "AceAddon-3.0" :NewAddon
+(var Self (LibStub "AceAddon-3.0" :NewAddon
   "SlackwiseTweaks"
   "AceConsole-3.0"
   "AceEvent-3.0"))
-(set Self.config (. LibStub "AceConfig-3.0"))
+(set Self.config (LibStub "AceConfig-3.0"))
 (set Self.frame (CreateFrame "Frame" "SlackwiseTweaks"))
 (set Self.itemBindingFrame (CreateFrame "Frame" "SlackwiseTweaks Item Bindings"))
 (set (_G.SlackwiseTweaks) Self)
@@ -89,9 +89,11 @@
 (fn isInitialized []
   (not (not (get Self "configDialog"))))
 
-(include :static-data)
-(include :core)
-(include :bindings)
-(include :options)
-(include :mount)
-(include :slackwise)
+; (include :static-data)
+; (include :core)
+; (include :bindings)
+; (include :options)
+; (include :mount)
+; (include :slackwise)
+
+(return) ;; #FIXME -- Workaround for Fennel returning between bundling

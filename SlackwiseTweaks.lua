@@ -86,7 +86,6 @@ end
 local function isInitialized()
   return not not get(Self, "configDialog")
 end
-__fnl_global__return()
 local MOUNT_IDS = {Charger = 84, ["Swift Razzashi Raptor"] = 110, ["Ashes of Al'ar"] = 183, ["Time-Lost Proto-Drake"] = 265, ["Mekgineer's Chopper"] = 275, ["Ironbound Proto-Drake"] = 306, ["Sea Turtle"] = 312, ["X-45 Heartbreaker"] = 352, ["Celestial Steed"] = 376, ["Sandstone Drake"] = 407, ["Tyrael's Charger"] = 439, ["Grand Expedition Yak"] = 460, ["Sky Golem"] = 522, ["Highlord's Golden Charger"] = 885, ["Highland Drake"] = 1563, ["Winding Slitherdrake"] = 1588, ["Renewed Proto-Drake"] = 1589, ["Grotto Netherwing Drake"] = 1744, ["Algarian Stormrider"] = 1792, ["Auspicious Arborwyrm"] = 1795, ["Trader's Gilded Brutosaur"] = 2265, ["Chaos-Forged Gryphon"] = 2304}
 local ACTUALLY_FLYABLE_MAP_IDS = {CONTINENTS = {619}, ZONES = {}, MAPS = {627}}
 local NOT_ACTUALLY_FLYABLE_MAP_IDS = {CONTINENTS = {905}, ZONES = {94, 95, 97, 103, 106, 110, 122, 747, 946, 1334, 1543, 1961}, MAPS = {715, 747, 1478}}

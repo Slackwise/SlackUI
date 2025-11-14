@@ -4,12 +4,22 @@
 		{
 			"label": "Build SlackwiseTweaks",
 			"type": "shell",
-			"command": "fennel-1.6.0.exe --compile init.fnl > SlackwiseTweaks.lua",
+			"command": "build.sh",
 			"args": [],
 			"problemMatcher": [],
 			"group": {
 				"kind": "build",
 				"isDefault": true
+			}
+		}
+		{
+			"label": "Clean SlackwiseTweaks",
+			"type": "shell",
+			"command": "clean.sh",
+			"args": [],
+			"problemMatcher": [],
+			"group": {
+				"kind": "none"
 			}
 		}
 	]

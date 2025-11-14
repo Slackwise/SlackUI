@@ -88,3 +88,10 @@
 
 (fn isInitialized []
   (not (not (get Self "configDialog"))))
+
+(include :static-data)
+(include :core)
+(include :bindings)
+(include :options)
+(include :mount)
+(include :slackwise)

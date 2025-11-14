@@ -14,4 +14,5 @@ src_files=(
   "slackwise.fnl"
 )
 
-$compiler --compile "${src_files[@]}" > "$output_file"
+# $compiler --compile "${src_files[@]}" > "$output_file"
+$compiler --compile "init.fnl" > "$output_file"

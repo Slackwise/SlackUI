@@ -37,8 +37,7 @@
 
 (fn bindBestUseItems []
   (when (InCombatLockdown)
-    (runAfterCombat bindBestUseItems)
-    (return))
+    (runAfterCombat bindBestUseItems))
 
   (ClearOverrideBindings Self.itemBindingFrame)
 
@@ -76,12 +75,10 @@
 
 (fn setBindings []
   (when (not (isTester))
-    (print "SlackwiseTweaks Bindings: Work in progress. Cannot bind currently.")
-    (return))
+    (print "SlackwiseTweaks Bindings: Work in progress. Cannot bind currently."))
 
   (when (InCombatLockdown)
-    (runAfterCombat setBindings)
-    (return))
+    (runAfterCombat setBindings))
 
   (LoadBindings BINDING_TYPE.DEFAULT_BINDINGS)
   (unbindUnwantedDefaults)

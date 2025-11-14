@@ -242,7 +242,7 @@
 ])
 
 (fn findDruidRareMobs [vignetteGUID]
-  (when (not (= (getClassName) "DRUID")) (return nil))
+  (when (not (= (getClassName) "DRUID")) nil)
   (log (.. "VIGNETTE ID: " vignetteGUID))
   (let [vignetteInfo (C_VignetteInfo.GetVignetteInfo vignetteGUID)]
     (when vignetteInfo

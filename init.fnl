@@ -82,9 +82,9 @@
           (table.insert Self.db.global.log (.. "Arg " i " = " v)))))))
 
 (fn OnInitialize [self]
-  (set self.db (. LibStub "AceDB-3.0" :New "SlackwiseTweaksDB" dbDefaults))
+  (set self.db (LibStub "AceDB-3.0" :New "SlackwiseTweaksDB" dbDefaults))
   (. config :RegisterOptionsTable "SlackwiseTweaks" options "slack")
-  (set self.configDialog (. LibStub "AceConfigDialog-3.0" :AddToBlizOptions "SlackwiseTweaks")))
+  (set self.configDialog (LibStub "AceConfigDialog-3.0" :AddToBlizOptions "SlackwiseTweaks")))
 
 (fn isInitialized []
   (not (not (get Self "configDialog"))))
@@ -96,4 +96,4 @@
 ; (include :mount)
 ; (include :slackwise)
 
-(return) ;; #FIXME -- Workaround for Fennel returning between bundling
+; (return) ;; #FIXME -- Workaround for Fennel returning between bundling

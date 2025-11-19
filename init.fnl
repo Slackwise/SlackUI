@@ -1,9 +1,9 @@
-(local Self (: (Lib-stub :AceAddon-3.0) :NewAddon :SlackwiseTweaks
+(local Self (: (LibStub :AceAddon-3.0) :NewAddon :SlackwiseTweaks
                :AceConsole-3.0 :AceEvent-3.0))
-(set Self.config (Lib-stub :AceConfig-3.0))
-(set Self.frame (Create-frame :Frame :SlackwiseTweaks))
+(set Self.config (LibStub :AceConfig-3.0))
+(set Self.frame (CreateFrame :Frame :SlackwiseTweaks))
 (set Self.itemBindingFrame
-     (Create-frame :Frame "SlackwiseTweaks Item Bindings"))
+     (CreateFrame :Frame "SlackwiseTweaks Item Bindings"))
 (set _G.SlackwiseTweaks Self)
 (set Self.Self Self)
 (setmetatable Self {:__index _G})

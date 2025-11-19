@@ -17,7 +17,7 @@ src_files=(
 
 
 # $compiler --compile "${src_files[@]}" | grep --invert-match "__fnl_global__return" > "$output_file"
-$compiler --compile "${src_files[@]}" > "$output_file"
+$compiler --globals --compile "${src_files[@]}" > "$output_file"
 # $compiler --require-as-include --compile "init.fnl" > "$output_file"
 
 # tmp=$"{output_file}.tmp"

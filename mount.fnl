@@ -11,19 +11,19 @@
     (Set-override-binding-spell Self.frame true :SHIFT-X "Second Wind")
     (Set-override-binding-spell Self.frame true :CTRL-X "Bronze Timelock")
     (if (= (get-class-name) :DRUID)
-        (Set-override-binding-macro Self.frame true :X :X)
-        (Set-override-binding-spell Self.frame true :X "Aerial Halt"))
+        (SetOverrideBindingMacro Self.frame true :X :X)
+        (SetOverrideBindingSpell Self.frame true :X "Aerial Halt"))
     (global is-dragonriding-bound true)))
 (fn unbind-dragonriding []
   (when (and (not (In-combat-lockdown)) is-dragonriding-bound)
-    (Clear-override-bindings Self.frame)
+    (ClearOverrideBindings Self.frame)
     (global is-dragonriding-bound false)))
 (global SKYRIDING_SPELLID 404464)
 (fn is-dragonriding []
   (let [dragonriding-spell-ids (C_Mount-journal.GetCollectedDragonridingMounts)]
     (when (and (C_Unit-auras.GetPlayerAuraBySpellID SKYRIDING_SPELLID)
                (is-actually-flyable-area))
-      (if (= (Get-shapeshift-form) 3) (lua "return true") (Is-mounted)
+      (if (= (GetShapeshiftForm 3) (lua "return true") (Is-mounted)
           (each [_ mount-id (ipairs dragonriding-spell-ids)]
             (local spell-id
                    (select 2 (C_Mount-journal.GetMountInfoByID mount-id)))

@@ -21,7 +21,7 @@
 (fn run-after-combat [f] (table.insert after-combat-actions f))
 (fn run-after-combat-actions []
   (while (> (length after-combat-actions) 0)
-    (when (not (In-combat-lockdown)) ((table.remove after-combat-actions)))))
+    (when (not (InCombatLockdown)) ((table.remove after-combat-actions)))))
 (fn in-vehicle [] (Unit-has-vehicle-uI :player))
 (fn is-ekil []
   (or (= (get-battletag) "ekil#1612") false))

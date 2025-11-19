@@ -1,36 +1,36 @@
 (fn handle-dragonriding []
   (when (is-tester)
     (if (is-dragonriding) (bind-dragonriding) (unbind-dragonriding))))
-(global is-dragonriding-bound false)
+(var is-dragonriding-bound false)
 (fn bind-dragonriding []
-  (when (and (not (In-combat-lockdown)) (not is-dragonriding-bound))
+  (when (and (not (InCombatLockdown)) (not is-dragonriding-bound))
     (Set-override-binding-spell Self.frame true :BUTTON3 "Skyward Ascent")
     (Set-override-binding-spell Self.frame true :SHIFT-BUTTON3 "Surge Forward")
     (Set-override-binding-spell Self.frame true :CTRL-BUTTON3 "Whirling Surge")
     (Set-override-binding-spell Self.frame true :BUTTON5 "Aerial Halt")
     (Set-override-binding-spell Self.frame true :SHIFT-X "Second Wind")
     (Set-override-binding-spell Self.frame true :CTRL-X "Bronze Timelock")
-    (if (= (get-class-name) :DRUID)
+    (if (= (GetClassName) :DRUID)
         (SetOverrideBindingMacro Self.frame true :X :X)
         (SetOverrideBindingSpell Self.frame true :X "Aerial Halt"))
     (global is-dragonriding-bound true)))
 (fn unbind-dragonriding []
-  (when (and (not (In-combat-lockdown)) is-dragonriding-bound)
+  (when (and (not (InCombatLockdown)) is-dragonriding-bound)
     (ClearOverrideBindings Self.frame)
-    (global is-dragonriding-bound false)))
+    (set is-dragonriding-bound false)))
 (global SKYRIDING_SPELLID 404464)
 (fn is-dragonriding []
-  (let [dragonriding-spell-ids (C_Mount-journal.GetCollectedDragonridingMounts)]
-    (when (and (C_Unit-auras.GetPlayerAuraBySpellID SKYRIDING_SPELLID)
+  (let [dragonriding-spell-ids (C_MountJournal.GetCollectedDragonridingMounts)]
+    (when (and (C_UnitAuras.GetPlayerAuraBySpellID SKYRIDING_SPELLID)
                (is-actually-flyable-area))
       (if (= (GetShapeshiftForm 3) (lua "return true") (Is-mounted)
           (each [_ mount-id (ipairs dragonriding-spell-ids)]
             (local spell-id
-                   (select 2 (C_Mount-journal.GetMountInfoByID mount-id)))
-            (when (C_Unit-auras.GetPlayerAuraBySpellID spell-id)
+                   (select 2 (C_MountJournal.GetMountInfoByID mount-id)))
+            (when (C_UnitAuras.GetPlayerAuraBySpellID spell-id)
               (lua "return true")))))
     false))
-(global MOUNTS_BY_USAGE {})
+(var MOUNTS_BY_USAGE {})
 (fn setup-ekil []
   (when (is-ekil)
     (global MOUNTS_BY_USAGE
@@ -43,28 +43,28 @@
                        :WATER (. MOUNT_IDS "Ironbound Proto-Drake")}})))
 (fn mount-by-usage [usage]
   (when (is-debugging) (print-debug-map-info))
-  (local class-mounts (or (. MOUNTS_BY_USAGE (get-class-name))
+  (local class-mounts (or (. MOUNTS_BY_USAGE (GetClassName))
                           (. MOUNTS_BY_USAGE :DEFAULT)))
-  (C_Mount-journal.SummonByID (. class-mounts usage)))
+  (C_MountJournal.SummonByID (. class-mounts usage)))
 (fn mount-by-name [mount-name]
-  (C_Mount-journal.SummonByID (. MOUNT_IDS mount-name)))
-(fn is-alternative-mount-requested [] (Is-modifier-key-down))
+  (C_MountJournal.SummonByID (. MOUNT_IDS mount-name)))
+(fn is-alternative-mount-requested [] (IsModifierKeyDown))
 (fn mount []
-  (when (Is-mounted) (Dismount) (lua "return "))
-  (when (Unit-using-vehicle :player) (Vehicle-exit) (lua "return "))
-  (when (Is-outdoors)
-    (if (and (is-actually-flyable-area) (not (Is-submerged)))
+  (when (IsMounted) (Dismount) (lua "return "))
+  (when (UnitUsingVehicle :player) (VehicleExit) (lua "return "))
+  (when (IsOutdoors)
+    (if (and (is-actually-flyable-area) (not (IsSubmerged)))
         (do
           (log "FLYING AREA")
           (when (is-alternative-mount-requested)
             (mount-by-usage :FLYING_SHOWOFF)
             (lua "return "))
-          (if (Is-in-group) (do
+          (if (IsInGroup) (do
                               (mount-by-usage :FLYING_PASSENGER)
                               (lua "return "))
               (do
                 (mount-by-usage :FLYING) (lua "return ")))
-          nil) (Is-submerged)
+          nil) (IsSubmerged)
         (do
           (when (is-alternative-mount-requested) (mount-by-usage :FLYING)
             (lua "return "))

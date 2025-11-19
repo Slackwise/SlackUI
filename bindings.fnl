@@ -28,7 +28,7 @@
   (or (. _G (.. :BINDING_NAME_ binding-name)) ""))
 (fn unbind-unwanted-defaults [] (Set-binding :SHIFT-T))
 (fn bind-best-use-items []
-  (when (In-combat-lockdown) (run-after-combat bind-best-use-items)
+  (when (InCombatLockdown) (run-after-combat bind-best-use-items)
     (lua "return "))
   (Clear-override-bindings Self.itemBindingFrame)
   (each [item-type item-map (pairs BEST_ITEMS)]
@@ -70,7 +70,7 @@
   (when (not (is-tester))
     (print "SlackwiseTweaks Bindings: Work in progress. Cannot bind currently.")
     (lua "return "))
-  (when (In-combat-lockdown) (run-after-combat set-bindings) (lua "return "))
+  (when (InCombatLockdown) (run-after-combat set-bindings) (lua "return "))
   (Load-bindings BINDING_TYPE.DEFAULT_BINDINGS)
   (unbind-unwanted-defaults)
   (each [_ binding (ipairs BINDINGS.GLOBAL)] (set-binding binding))

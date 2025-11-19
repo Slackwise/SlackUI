@@ -57,8 +57,7 @@
         (do
           (log "FLYING AREA")
           (when (is-alternative-mount-requested)
-            (mount-by-usage :FLYING_SHOWOFF)
-            (lua "return "))
+            (mount-by-usage :FLYING_SHOWOFF))
           (if (IsInGroup) (do
                               (mount-by-usage :FLYING_PASSENGER)
                               (lua "return "))
@@ -69,16 +68,12 @@
           (when (is-alternative-mount-requested) (mount-by-usage :FLYING)
             (lua "return "))
           (mount-by-usage :WATER)
-          nil) (if (Is-in-group)
+          nil) (if (IsInGroup)
                           (do
                             (when (is-alternative-mount-requested)
-                              (mount-by-usage :GROUND_SHOWOFF)
-                              (lua "return "))
-                            (mount-by-usage :GROUND_PASSENGER)
-                            nil)
+                              (mount-by-usage :GROUND_SHOWOFF))
+                            (mount-by-usage :GROUND_PASSENGER))
                           (do
                             (when (is-alternative-mount-requested)
-                              (mount-by-usage :GROUND_SHOWOFF)
-                              (lua "return "))
-                            (mount-by-usage :GROUND)
-                            nil)))))	
+                              (mount-by-usage :GROUND_SHOWOFF))
+                            (mount-by-usage :GROUND))))))

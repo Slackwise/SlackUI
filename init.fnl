@@ -7,6 +7,7 @@
 (set _G.SlackwiseTweaks Self)
 (set Self.Self Self)
 (setmetatable Self {:__index _G})
+(setfenv 1 Self)
 (global (addon-name addon-table) ...)
 (global db-defaults
         {:global {:isDebugging false :log {}}

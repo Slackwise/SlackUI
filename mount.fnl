@@ -1,8 +1,8 @@
-(fn _G.handle-dragonriding []
+(fn handle-dragonriding []
   (when (is-tester)
     (if (is-dragonriding) (bind-dragonriding) (unbind-dragonriding))))
 (global is-dragonriding-bound false)
-(fn _G.bind-dragonriding []
+(fn bind-dragonriding []
   (when (and (not (In-combat-lockdown)) (not is-dragonriding-bound))
     (Set-override-binding-spell Self.frame true :BUTTON3 "Skyward Ascent")
     (Set-override-binding-spell Self.frame true :SHIFT-BUTTON3 "Surge Forward")
@@ -14,12 +14,12 @@
         (Set-override-binding-macro Self.frame true :X :X)
         (Set-override-binding-spell Self.frame true :X "Aerial Halt"))
     (global is-dragonriding-bound true)))
-(fn _G.unbind-dragonriding []
+(fn unbind-dragonriding []
   (when (and (not (In-combat-lockdown)) is-dragonriding-bound)
     (Clear-override-bindings Self.frame)
     (global is-dragonriding-bound false)))
 (global SKYRIDING_SPELLID 404464)
-(fn _G.is-dragonriding []
+(fn is-dragonriding []
   (let [dragonriding-spell-ids (C_Mount-journal.GetCollectedDragonridingMounts)]
     (when (and (C_Unit-auras.GetPlayerAuraBySpellID SKYRIDING_SPELLID)
                (is-actually-flyable-area))
@@ -31,7 +31,7 @@
               (lua "return true")))))
     false))
 (global MOUNTS_BY_USAGE {})
-(fn _G.setup-ekil []
+(fn setup-ekil []
   (when (is-ekil)
     (global MOUNTS_BY_USAGE
             {:DEFAULT {:FLYING (. MOUNT_IDS "Ironbound Proto-Drake")
@@ -41,15 +41,15 @@
                        :GROUND_PASSENGER (. MOUNT_IDS "Renewed Proto-Drake")
                        :GROUND_SHOWOFF (. MOUNT_IDS "Ironbound Proto-Drake")
                        :WATER (. MOUNT_IDS "Ironbound Proto-Drake")}})))
-(fn _G.mount-by-usage [usage]
+(fn mount-by-usage [usage]
   (when (is-debugging) (print-debug-map-info))
   (local class-mounts (or (. MOUNTS_BY_USAGE (get-class-name))
                           (. MOUNTS_BY_USAGE :DEFAULT)))
   (C_Mount-journal.SummonByID (. class-mounts usage)))
-(fn _G.mount-by-name [mount-name]
+(fn mount-by-name [mount-name]
   (C_Mount-journal.SummonByID (. MOUNT_IDS mount-name)))
-(fn _G.is-alternative-mount-requested [] (Is-modifier-key-down))
-(fn _G.mount []
+(fn is-alternative-mount-requested [] (Is-modifier-key-down))
+(fn mount []
   (when (Is-mounted) (Dismount) (lua "return "))
   (when (Unit-using-vehicle :player) (Vehicle-exit) (lua "return "))
   (when (Is-outdoors)

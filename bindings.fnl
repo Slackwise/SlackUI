@@ -12,7 +12,6 @@
         "Use Best Healing Potion")
 (global BINDING_NAME_SLACKWISETWEAKS_BEST_MANA_POTION "Use Best Mana Potion")
 (global BINDING_NAME_SLACKWISETWEAKS_BEST_BANDAGE "Use Best Bandage")
-(setfenv 1 _G.SlackwiseTweaks)
 (global BINDINGS {})
 (global BINDING_TYPE {:ACCOUNT_BINDINGS 1
                       :CHARACTER_BINDINGS 2
@@ -22,20 +21,20 @@
          :item Set-binding-item
          :macro Set-binding-macro
          :spell Set-binding-spell})
-(fn _G.set-binding [binding]
+(fn set-binding [binding]
   (let [(key type name) (unpack binding)]
     ((. BINDINGS_FUNCTIONS type) key name)))
-(fn _G.get-binding-description [binding-name]
+(fn get-binding-description [binding-name]
   (or (. _G (.. :BINDING_NAME_ binding-name)) ""))
-(fn _G.unbind-unwanted-defaults [] (Set-binding :SHIFT-T))
-(fn _G.bind-best-use-items []
+(fn unbind-unwanted-defaults [] (Set-binding :SHIFT-T))
+(fn bind-best-use-items []
   (when (In-combat-lockdown) (run-after-combat bind-best-use-items)
     (lua "return "))
   (Clear-override-bindings Self.itemBindingFrame)
   (each [item-type item-map (pairs BEST_ITEMS)]
     (log (.. "Binding " (get-binding-description item-map.BINDING_NAME) "..."))
     (bind-best-use-item item-map)))
-(fn _G.bind-best-use-item [best-item-map]
+(fn bind-best-use-item [best-item-map]
   (let [container-item-infos (find-items-by-item-iDs (keys best-item-map))]
     (when (and (is-debugging) container-item-infos)
       (log (.. (get-binding-description best-item-map.BINDING_NAME)
@@ -67,7 +66,7 @@
                      (C_Item.GetItemNameByID best-item-iD) " to " key))
             (Set-override-binding-item Self.itemBindingFrame true key
                                        (.. "item:" best-item-iD))))))))
-(fn _G.set-bindings []
+(fn set-bindings []
   (when (not (is-tester))
     (print "SlackwiseTweaks Bindings: Work in progress. Cannot bind currently.")
     (lua "return "))

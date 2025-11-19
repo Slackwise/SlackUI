@@ -18,15 +18,15 @@
 (fn Self.UNIT_AURA [self event-name unit-target update-info]
   (when (= unit-target :player) (handle-dragonriding)))
 (global after-combat-actions {})
-(fn _G.run-after-combat [f] (table.insert after-combat-actions f))
-(fn _G.run-after-combat-actions []
+(fn run-after-combat [f] (table.insert after-combat-actions f))
+(fn run-after-combat-actions []
   (while (> (length after-combat-actions) 0)
     (when (not (In-combat-lockdown)) ((table.remove after-combat-actions)))))
-(fn _G.in-vehicle [] (Unit-has-vehicle-uI :player))
-(fn _G.is-ekil []
+(fn in-vehicle [] (Unit-has-vehicle-uI :player))
+(fn is-ekil []
   (or (= (get-battletag) "ekil#1612") false))
-(fn _G.get-class-name [] (select 2 (Unit-class :player)))
-(fn _G.get-spec-name []
+(fn get-class-name [] (select 2 (Unit-class :player)))
+(fn get-spec-name []
   (let [spec-index (Get-specialization)]
     (when spec-index
       (log (.. "specIndex = " (or spec-index :nil)))
@@ -35,12 +35,12 @@
       (log (.. "specName = " (or spec-name :nil)))
       (when spec-name
         (let [___antifnl_rtns_1___ [(strupper spec-name)]]
-          (lua "return (table.unpack or _G.unpack)(___antifnl_rtns_1___)"))))
+          (lua "return (table.unpack or unpack)(___antifnl_rtns_1___)"))))
     nil))
-(fn _G.set-cVars [] (Set-cVar :cameraDistanceMaxZoomFactor 2.6)
+(fn set-cVars [] (Set-cVar :cameraDistanceMaxZoomFactor 2.6)
   (Set-cVar :minimapTrackingShowAll 1))
-(fn _G.repair-all-items [] (when (Can-merchant-repair) (Repair-all-items)))
-(fn _G.can-collect-transmog [item-info]
+(fn repair-all-items [] (when (Can-merchant-repair) (Repair-all-items)))
+(fn can-collect-transmog [item-info]
   (when (is-classic) (lua "return false"))
   (local (item-appearance-iD source-iD)
          (C_Transmog-collection.GetItemInfo item-info))
@@ -52,7 +52,7 @@
       (lua "return ___antifnl_rtn_1___")))
   false)
 (global ITEM_QUALITY_GREY 0)
-(fn _G.sell-grey-items []
+(fn sell-grey-items []
   (for [bag 0 NUM_BAG_SLOTS]
     (for [slot 0 (C_Container.GetContainerNumSlots bag)]
       (local link (C_Container.GetContainerItemLink bag slot))
@@ -63,30 +63,30 @@
               (print (.. "[SlackwiseTweaks] Not selling transmog-able item: "
                          item-link))
               (C_Container.UseContainerItem bag slot)))))))
-(fn _G.is-spell-known [spell-name]
+(fn is-spell-known [spell-name]
   (let [(link spell-iD) (Get-spell-link spell-name)]
     (when spell-iD
       (let [___antifnl_rtns_1___ [(Is-spell-known spell-iD)]]
-        (lua "return (table.unpack or _G.unpack)(___antifnl_rtns_1___)")))
+        (lua "return (table.unpack or unpack)(___antifnl_rtns_1___)")))
     false))
-(fn _G.get-key-by-value [target-table target-value]
+(fn get-key-by-value [target-table target-value]
   (each [key value (pairs target-table)]
     (when (= value target-value) (lua "return key")))
   nil)
-(fn _G.keys [target-table]
+(fn keys [target-table]
   (let [collected-keys {}]
     (each [key value (pairs target-table)] (table.insert collected-keys key))
     collected-keys))
-(fn _G.find-first-element [target-table kv-predicate]
+(fn find-first-element [target-table kv-predicate]
   (each [key value (pairs target-table)]
     (when (kv-predicate key value) (lua "return key, value")))
   (values nil nil))
-(fn _G.find-elements [target-table kv-predicate]
+(fn find-elements [target-table kv-predicate]
   (let [found {}]
     (each [key value (pairs target-table)]
       (when (kv-predicate key value) (tset found key value)))
     found))
-(fn _G.find-items-by-item-iDs [item-iDs]
+(fn find-items-by-item-iDs [item-iDs]
   (let [found {}]
     (for [bag 0 NUM_BAG_SLOTS]
       (for [slot 0 (C_Container.GetContainerNumSlots bag)]
@@ -96,7 +96,7 @@
           (when (and item-name (t-contains item-iDs container-item-info.itemID))
             (table.insert found container-item-info)))))
     found))
-(fn _G.find-items-by-regex [regex]
+(fn find-items-by-regex [regex]
   (let [found {}]
     (for [bag 0 NUM_BAG_SLOTS]
       (for [slot 0 (C_Container.GetContainerNumSlots bag)]
@@ -106,40 +106,40 @@
           (when (and item-name (string.match item-name regex))
             (table.insert found container-item-info)))))
     found))
-(fn _G.group-by [array grouping-function]
+(fn group-by [array grouping-function]
   (let [grouped {}]
     (each [key value (pairs array)]
       (local (grouping-key new-value) (grouping-function value))
       (if (. grouped value) (table.insert (. grouped grouping-key) new-value)
           (tset grouped grouping-key [new-value])))
     grouped))
-(fn _G.find-largest-index [array]
+(fn find-largest-index [array]
   (var largest-index 0)
   (each [key value (pairs array)]
     (when (and (tonumber key) (>= key largest-index)) (set largest-index key)))
   largest-index)
-(fn _G.find-parent-map-by-type [map ui-map-type]
+(fn find-parent-map-by-type [map ui-map-type]
   (when (not map) (lua "return nil"))
   (when (or (= map.mapType ui-map-type) (= map.mapType Enum.UIMapType.Cosmic))
     (lua "return map"))
   (find-parent-map-by-type (C_Map.GetMapInfo map.parentMapID) ui-map-type))
-(fn _G.get-current-map []
+(fn get-current-map []
   (C_Map.GetMapInfo (or (C_Map.GetBestMapForUnit :player) 0)))
-(fn _G.get-current-continent []
+(fn get-current-continent []
   (let [map (get-current-map)]
     (when map
       (let [___antifnl_rtns_1___ [(find-parent-map-by-type map
                                                            Enum.UIMapType.Continent)]]
-        (lua "return (table.unpack or _G.unpack)(___antifnl_rtns_1___)")))
+        (lua "return (table.unpack or unpack)(___antifnl_rtns_1___)")))
     nil))
-(fn _G.get-current-zone []
+(fn get-current-zone []
   (let [map (get-current-map)]
     (when map
       (let [___antifnl_rtns_1___ [(find-parent-map-by-type map
                                                            Enum.UIMapType.Zone)]]
-        (lua "return (table.unpack or _G.unpack)(___antifnl_rtns_1___)")))
+        (lua "return (table.unpack or unpack)(___antifnl_rtns_1___)")))
     nil))
-(fn _G.is-actually-flyable-area []
+(fn is-actually-flyable-area []
   (let [continent (get-current-continent)
         continent-iD (or (and continent continent.mapID) 0)
         zone (get-current-zone)
@@ -165,7 +165,7 @@
     (when listed-flyable-continent (lua "return true"))
     (when listed-non-flyable-continent (lua "return false"))
     (Is-flyable-area)))
-(fn _G.print-debug-map-info []
+(fn print-debug-map-info []
   (let [map (get-current-map)
         zone (get-current-zone)
         continent (get-current-continent)
@@ -193,7 +193,7 @@
                          "Mosa Umbramane"
                          "Ristar the Rabid"
                          "Talthonei Ashwhisper"])
-(fn _G.find-druid-rare-mobs [vignette-gUID]
+(fn find-druid-rare-mobs [vignette-gUID]
   (when (not= (get-class-name) :DRUID) (lua "return "))
   (log (.. "VIGNETTE ID: " vignette-gUID))
   (local vignette-info (C_Vignette-info.GetVignetteInfo vignette-gUID))
@@ -202,7 +202,7 @@
   (log (.. "VIGNETTE NAME: " (or name "")))
   (when (t-contains DRUID_RARE_MOBS name) (found-druid-rare name)))
 (global found-druid-rares {})
-(fn _G.found-druid-rare [name]
+(fn found-druid-rare [name]
   (let [current-unix-timestamp (Get-server-time)
         (current-hour current-minute) (Get-game-time)
         last-time-found (. found-druid-rares name)]
@@ -210,9 +210,9 @@
               (is-time-within last-time-found (* 5 60) (Get-server-time)))
       (tset found-druid-rares name
             [current-unix-timestamp current-hour current-minute]))))
-(fn _G.announce-found-druid-rare [name] (log (.. "Found druid rare: " name))
+(fn announce-found-druid-rare [name] (log (.. "Found druid rare: " name))
   (Send-chat-message (name ".. spotted!") :CHANNEL nil 5))
-(fn _G.is-time-within [origin-unix-timestamp
+(fn is-time-within [origin-unix-timestamp
                        seconds-to-be-within
                        current-unix-timestamp]
   (>= current-unix-timestamp

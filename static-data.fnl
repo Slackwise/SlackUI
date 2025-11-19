@@ -1,4 +1,4 @@
-(setfenv 1 _G.SlackwiseTweaks)
+(setfenv 1 SlackwiseTweaks)
 (global MOUNT_IDS {"Algarian Stormrider" 1792
                    "Ashes of Al'ar" 183
                    "Auspicious Arborwyrm" 1795

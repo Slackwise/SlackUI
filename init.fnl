@@ -7,7 +7,6 @@
 (set _G.SlackwiseTweaks Self)
 (set Self.Self Self)
 (setmetatable Self {:__index _G})
-(setfenv 1 Self)
 (global (addon-name addon-table) ...)
 (global db-defaults
         {:global {:isDebugging false :log {}}
@@ -25,26 +24,26 @@
                             :steadyflight-showoff nil
                             :water nil
                             :water-showoff nil}}})
-(fn _G.get-battletag [] (select 2 (BNGet-info)))
-(fn _G.is-slackwise []
+(fn get-battletag [] (select 2 (BNGet-info)))
+(fn is-slackwise []
   (or (= (get-battletag) "Slackwise#1121") false))
-(fn _G.is-tester [] (is-slackwise))
-(fn _G.is-retail [] (if (= WOW_PROJECT_ID WOW_PROJECT_MAINLINE) true false))
-(fn _G.is-classic [] (if (= WOW_PROJECT_ID WOW_PROJECT_CLASSIC) true false))
-(fn _G.get-game-type []
+(fn is-tester [] (is-slackwise))
+(fn is-retail [] (if (= WOW_PROJECT_ID WOW_PROJECT_MAINLINE) true false))
+(fn is-classic [] (if (= WOW_PROJECT_ID WOW_PROJECT_CLASSIC) true false))
+(fn get-game-type []
   (if (is-retail) :RETAIL
       (is-classic) :CLASSIC
       :UNKNOWN))
-(fn _G.is-debugging []
+(fn is-debugging []
   (when (is-initialized)
     (let [___antifnl_rtn_1___ Self.db.global.isDebugging]
       (lua "return ___antifnl_rtn_1___")))
   (if (is-slackwise) true false))
 (global COLOR_START :|c)
 (global COLOR_END :|r)
-(fn _G.color [color] (fn [text] (.. COLOR_START :FF color text COLOR_END)))
+(fn color [color] (fn [text] (.. COLOR_START :FF color text COLOR_END)))
 (global grey (color :AAAAAA))
-(fn _G.log [message ...]
+(fn log [message ...]
   (when (is-debugging)
     (print (.. (grey (date)) "  " message))
     (when (is-initialized)
@@ -57,5 +56,5 @@
   (config:RegisterOptionsTable :SlackwiseTweaks options :slack)
   (set Self.configDialog (: (Lib-stub :AceConfigDialog-3.0) :AddToBlizOptions
                             :SlackwiseTweaks)))
-(fn _G.is-initialized []
+(fn is-initialized []
   (not (not (. Self :configDialog))))	
